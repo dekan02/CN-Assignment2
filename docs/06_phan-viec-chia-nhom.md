@@ -28,3 +28,8 @@ Chia theo 5 nhóm của đề, ghép vào cuối tuần. Bản nháp, chờ nhó
 
 - Trước cuối tuần: chốt nền tảng lab và cấu hình máy x86 của đồng đội.
 - Cuối tuần: gộp cấu hình, chạy thử toàn bộ, tập demo failover.
+
+## Tiến độ nhóm 2 và 4 (29/10/2026)
+
+- Nhóm 2: đã viết Configurations/*/02-routing.cfg cho ISP, 3 edge router, HCM-CORE1, HCM-CORE2, HN-SW1 (OSPF area 0, eBGP với ISP, IPsec VTI IKEv2). Chưa thử trên thiết bị thật. Lệnh kiểm tra ở docs/07.
+- Nhóm 4: đã có Automation/ip-plan.yml, check_plan.py, deploy.py, inventory.yml, unit test. Chưa kết nối thiết bị thật nên phần Netmiko chưa được chạy với lab.

@@ -86,3 +86,20 @@ WAN: ISP links 10.0.1.0/30, 10.0.2.0/30, 10.0.3.0/30 (ISP là .1, site là .2). 
 5. NAT và ACL, rồi Snooping và DAI, rồi QoS.
 6. Script Netmiko đẩy toàn bộ; dựng lại từ cấu hình trống để chứng minh.
 7. Diễn tập failover: rút một core link, đo thời gian hồi phục, mục tiêu dưới 3 phút.
+
+## Địa chỉ liên kết và giao diện (nhóm 2)
+
+| Thiết bị | Cổng | Địa chỉ | Nối tới |
+|---|---|---|---|
+| ISP | Gi0/0, Gi0/1, Gi0/2 | 10.0.1.1, 10.0.2.1, 10.0.3.1 (/30) | HCM-R1, HN-R1, DN-R1 |
+| ISP | Lo0, Lo8 | 9.9.9.9, 8.8.8.8 | router, Internet giả lập |
+| HCM-R1 | Gi0/0 | 10.0.1.2/30 | ISP |
+| HCM-R1 | Gi0/1, Gi0/2 | 10.10.100.1/30, 10.10.100.5/30 | CORE1, CORE2 |
+| HCM-CORE1, CORE2 | Gi0/0 | 10.10.100.2/30, 10.10.100.6/30 | HCM-R1 |
+| HN-R1 | Gi0/0, Gi0/1 | 10.0.2.2/30, 10.20.100.1/30 | ISP, HN-SW1 |
+| HN-SW1 | Gi0/0 | 10.20.100.2/30 | HN-R1 |
+| DN-R1 | Gi0/0 | 10.0.3.2/30 | ISP |
+| Tunnel12 | HCM-R1 và HN-R1 | 192.168.12.1 và .2 (/30) | IPsec VTI |
+| Tunnel13 | HCM-R1 và DN-R1 | 192.168.13.1 và .2 (/30) | IPsec VTI |
+
+Loopback: edge 1.1.1.1, 2.2.2.2, 3.3.3.3; core và switch L3 10.10.255.11, 10.10.255.12, 10.20.255.11. Khối địa chỉ công cộng cho NAT: 203.0.113.0/29 (HCM), 198.51.100.0/29 (HN), 192.0.2.0/29 (DN), quảng bá lên ISP bằng BGP. ISP chỉ gửi lại route mặc định cho các site, để lưu lượng giữa các site buộc đi qua tunnel IPsec. Mô hình giữa các site là hub and spoke: HN và DN nói chuyện với nhau qua HCM-R1.

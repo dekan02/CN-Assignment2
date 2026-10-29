@@ -12,13 +12,13 @@ Môn Computer Network HK261. Thiết kế và dựng mạng cho TechViet Innovat
 
 ## Phân việc
 
-| Nhóm | Nội dung | Người làm | Trạng thái |
-|---|---|---|---|
-| 1 | Layer 2 (VLAN, trunk, LACP, STP), HSRP, DHCP relay | Đồng đội | Chưa làm |
-| 2 | OSPF, BGP, IPsec | Khang | Đã viết cấu hình, chưa thử trên lab thật |
-| 3 | NAT, ACL, DHCP Snooping, DAI, QoS | Đồng đội | Chưa làm |
-| 4 | Script Netmiko, kế hoạch IP | Khang | Đã viết, chưa thử trên lab thật |
-| 5 | Báo cáo PDF, đóng gói ZIP | Cả hai | Chưa làm |
+| Nhóm | Nội dung | Trạng thái |
+|---|---|---|
+| 1 | Layer 2 (VLAN, trunk, LACP, STP), HSRP, DHCP relay | Chưa làm |
+| 2 | OSPF, BGP, IPsec | Đã viết cấu hình, chưa thử trên lab thật |
+| 3 | NAT, ACL, DHCP Snooping, DAI, QoS | Chưa làm |
+| 4 | Script Netmiko, kế hoạch IP | Đã viết, chưa thử trên lab thật |
+| 5 | Báo cáo PDF, đóng gói ZIP | Chưa làm |
 
 ## Cấu trúc thư mục
 
@@ -80,7 +80,7 @@ bash run.sh
 ## Quy trình git
 
 - main: bản ổn định. develop: nơi gộp công việc của cả hai.
-- Mỗi người làm trên branch riêng, ví dụ khang/routing-automation, rồi merge vào develop.
+- Mỗi người làm trên branch riêng, ví dụ feature/routing-automation, rồi merge vào develop.
 - Commit nhỏ, đúng tài khoản của mình; lịch sử commit là bằng chứng đóng góp của từng người.
 - Không commit file log, thư mục clab-tvi, thư mục backups, mật khẩu thật.
 

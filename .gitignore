@@ -1,0 +1,8 @@
+.DS_Store
+lab-frr/clab-tvi/
+lab-frr/run.log
+*.pyc
+__pycache__/
+.venv/
+venv/
+*.zip

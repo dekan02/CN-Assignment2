@@ -1,9 +1,6 @@
 .DS_Store
-lab-frr/clab-tvi/
-lab-frr/run.log
-*.pyc
-__pycache__/
-.venv/
 venv/
+.venv/
+__pycache__/
+*.pyc
 *.zip
-Automation/backups/

@@ -83,7 +83,3 @@ bash run.sh
 - Mỗi người làm trên branch riêng, ví dụ feature/routing-automation, rồi merge vào develop.
 - Commit nhỏ, đúng tài khoản của mình; lịch sử commit là bằng chứng đóng góp của từng người.
 - Không commit file log, thư mục clab-tvi, thư mục backups, mật khẩu thật.
-
-## Hạn nộp
-
-Đề ghi 17/11/2026 nhưng đang mâu thuẫn (ghi là Chủ nhật, thực tế là thứ Ba). Cần hỏi giảng viên cùng các câu về EVPN, nguồn image và quy mô nhóm.

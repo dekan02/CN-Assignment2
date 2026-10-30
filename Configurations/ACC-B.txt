@@ -1,0 +1,139 @@
+hostname ACC-B
+no ip domain-lookup
+service password-encryption
+enable secret Lab@2026
+username admin privilege 15 secret Lab@2026
+banner motd #Authorized access only#
+line con 0
+ logging synchronous
+line vty 0 4
+ login local
+exit
+spanning-tree mode rapid-pvst
+vlan 210
+ name B-ER
+exit
+vlan 211
+ name B-INPATIENT
+exit
+vlan 212
+ name B-ADMIN
+exit
+vlan 213
+ name B-FINANCE-HR
+exit
+vlan 214
+ name B-TRAINING
+exit
+vlan 215
+ name B-IT
+exit
+vlan 250
+ name B-VOICE
+exit
+vlan 260
+ name B-MEDDEV
+exit
+vlan 270
+ name B-AP
+exit
+vlan 280
+ name B-CCTV
+exit
+vlan 299
+ name B-MGMT
+exit
+interface GigabitEthernet0/1
+ description to DS-B1
+ switchport mode trunk
+ switchport trunk allowed vlan 210,211,212,213,214,215,250,260,270,280,299
+ no shutdown
+exit
+interface GigabitEthernet0/2
+ description to DS-B2
+ switchport mode trunk
+ switchport trunk allowed vlan 210,211,212,213,214,215,250,260,270,280,299
+ no shutdown
+exit
+interface FastEthernet0/1
+ description B-ER
+ switchport mode access
+ switchport access vlan 210
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/2
+ description B-INPATIENT
+ switchport mode access
+ switchport access vlan 211
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/3
+ description B-ADMIN
+ switchport mode access
+ switchport access vlan 212
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/4
+ description B-FINANCE-HR
+ switchport mode access
+ switchport access vlan 213
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/5
+ description B-TRAINING
+ switchport mode access
+ switchport access vlan 214
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/6
+ description B-IT
+ switchport mode access
+ switchport access vlan 215
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/7
+ description B-AP
+ switchport mode access
+ switchport access vlan 270
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/8
+ description B-CCTV
+ switchport mode access
+ switchport access vlan 280
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/9
+ description B-MEDDEV
+ switchport mode access
+ switchport access vlan 260
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/10
+ description B-VOICE
+ switchport mode access
+ switchport access vlan 250
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/11
+ description B-INPATIENT
+ switchport mode access
+ switchport access vlan 211
+ spanning-tree portfast
+ no shutdown
+exit
+interface Vlan299
+ ip address 10.10.20.196 255.255.255.192
+ no shutdown
+exit
+ip default-gateway 10.10.20.193

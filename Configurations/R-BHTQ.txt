@@ -1,0 +1,210 @@
+hostname R-BHTQ
+no ip domain-lookup
+service password-encryption
+enable secret Lab@2026
+username admin privilege 15 secret Lab@2026
+banner motd #Authorized access only#
+line con 0
+ logging synchronous
+line vty 0 4
+ login local
+exit
+interface Loopback0
+ ip address 172.16.255.10 255.255.255.255
+ no shutdown
+exit
+interface GigabitEthernet0/0
+ description leased line to R-WAN2
+ ip address 172.16.1.14 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet0/1
+ description trunk to switches
+ no shutdown
+exit
+ip access-list extended ACL-CCTV
+ permit udp any eq bootpc any eq bootps
+ permit udp any host 224.0.0.2 eq 1985
+ permit ip any host 10.30.5.98
+ deny ip any any
+exit
+ip access-list extended ACL-GUEST
+ permit udp any eq bootpc any eq bootps
+ permit udp any host 224.0.0.2 eq 1985
+ permit udp any host 10.10.36.70 eq domain
+ deny ip any 10.0.0.0 0.255.255.255
+ deny ip any 172.16.0.0 0.15.255.255
+ deny ip any 192.168.0.0 0.0.255.255
+ permit ip any any
+exit
+ip access-list extended ACL-MEDDEV
+ permit udp any eq bootpc any eq bootps
+ permit udp any host 224.0.0.2 eq 1985
+ permit ip any host 10.10.36.66
+ permit ip any host 10.10.36.68
+ permit ip any host 10.10.36.69
+ permit ip any host 10.30.5.98
+ deny ip any any
+exit
+interface GigabitEthernet0/1.110
+ description BHTQ-CLINIC
+ encapsulation dot1Q 110
+ ip address 10.30.0.1 255.255.255.0
+exit
+interface GigabitEthernet0/1.111
+ description BHTQ-LABIMG
+ encapsulation dot1Q 111
+ ip address 10.30.3.1 255.255.255.128
+exit
+interface GigabitEthernet0/1.112
+ description BHTQ-ADMIN
+ encapsulation dot1Q 112
+ ip address 10.30.3.129 255.255.255.128
+exit
+interface GigabitEthernet0/1.113
+ description BHTQ-IT
+ encapsulation dot1Q 113
+ ip address 10.30.5.1 255.255.255.224
+exit
+interface GigabitEthernet0/1.150
+ description BHTQ-VOICE
+ encapsulation dot1Q 150
+ ip address 10.30.1.1 255.255.255.0
+exit
+interface GigabitEthernet0/1.160
+ description BHTQ-MEDDEV
+ encapsulation dot1Q 160
+ ip address 10.30.4.129 255.255.255.192
+ ip access-group ACL-MEDDEV in
+exit
+interface GigabitEthernet0/1.170
+ description BHTQ-AP
+ encapsulation dot1Q 170
+ ip address 10.30.5.33 255.255.255.224
+exit
+interface GigabitEthernet0/1.180
+ description BHTQ-CCTV
+ encapsulation dot1Q 180
+ ip address 10.30.4.193 255.255.255.192
+ ip access-group ACL-CCTV in
+exit
+interface GigabitEthernet0/1.300
+ description BHTQ-SERVER
+ encapsulation dot1Q 300
+ ip address 10.30.5.97 255.255.255.248
+exit
+interface GigabitEthernet0/1.320
+ description BHTQ-WIFI-STAFF
+ encapsulation dot1Q 320
+ ip address 10.30.4.1 255.255.255.128
+exit
+interface GigabitEthernet0/1.330
+ description BHTQ-WIFI-GUEST
+ encapsulation dot1Q 330
+ ip address 10.30.2.1 255.255.255.0
+ ip access-group ACL-GUEST in
+exit
+interface GigabitEthernet0/1.399
+ description BHTQ-MGMT
+ encapsulation dot1Q 399
+ ip address 10.30.5.65 255.255.255.224
+exit
+ip dhcp excluded-address 10.30.0.1 10.30.0.10
+ip dhcp pool P-BHTQ-CLINIC
+ network 10.30.0.0 255.255.255.0
+ default-router 10.30.0.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.30.3.1 10.30.3.10
+ip dhcp pool P-BHTQ-LABIMG
+ network 10.30.3.0 255.255.255.128
+ default-router 10.30.3.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.30.3.129 10.30.3.138
+ip dhcp pool P-BHTQ-ADMIN
+ network 10.30.3.128 255.255.255.128
+ default-router 10.30.3.129
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.30.5.1 10.30.5.10
+ip dhcp pool P-BHTQ-IT
+ network 10.30.5.0 255.255.255.224
+ default-router 10.30.5.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.30.1.1 10.30.1.10
+ip dhcp pool P-BHTQ-VOICE
+ network 10.30.1.0 255.255.255.0
+ default-router 10.30.1.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.30.4.129 10.30.4.138
+ip dhcp pool P-BHTQ-MEDDEV
+ network 10.30.4.128 255.255.255.192
+ default-router 10.30.4.129
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.30.5.33 10.30.5.42
+ip dhcp pool P-BHTQ-AP
+ network 10.30.5.32 255.255.255.224
+ default-router 10.30.5.33
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.30.4.193 10.30.4.202
+ip dhcp pool P-BHTQ-CCTV
+ network 10.30.4.192 255.255.255.192
+ default-router 10.30.4.193
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.30.4.1 10.30.4.10
+ip dhcp pool P-BHTQ-WIFI-STAFF
+ network 10.30.4.0 255.255.255.128
+ default-router 10.30.4.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.30.2.1 10.30.2.10
+ip dhcp pool P-BHTQ-WIFI-GUEST
+ network 10.30.2.0 255.255.255.0
+ default-router 10.30.2.1
+ dns-server 10.10.36.70
+exit
+crypto isakmp policy 10
+ encryption aes
+ hash sha
+ authentication pre-share
+ group 2
+ lifetime 86400
+exit
+crypto isakmp key HospitalWAN2026 address 172.16.1.13
+crypto ipsec transform-set TS-WAN esp-aes esp-sha-hmac
+exit
+crypto map WANMAP 10 ipsec-isakmp
+ set peer 172.16.1.13
+ set transform-set TS-WAN
+ match address 110
+exit
+access-list 110 permit ip 10.30.0.0 0.0.255.255 10.10.0.0 0.0.255.255
+access-list 110 permit ip 10.30.0.0 0.0.255.255 10.20.0.0 0.0.255.255
+interface GigabitEthernet0/0
+ crypto map WANMAP
+exit
+router ospf 1
+ router-id 172.16.255.10
+ passive-interface default
+ no passive-interface GigabitEthernet0/0
+ network 172.16.255.10 0.0.0.0 area 0
+ network 172.16.1.12 0.0.0.3 area 0
+ network 10.30.0.0 0.0.0.255 area 0
+ network 10.30.3.0 0.0.0.127 area 0
+ network 10.30.3.128 0.0.0.127 area 0
+ network 10.30.5.0 0.0.0.31 area 0
+ network 10.30.1.0 0.0.0.255 area 0
+ network 10.30.4.128 0.0.0.63 area 0
+ network 10.30.5.32 0.0.0.31 area 0
+ network 10.30.4.192 0.0.0.63 area 0
+ network 10.30.5.96 0.0.0.7 area 0
+ network 10.30.4.0 0.0.0.127 area 0
+ network 10.30.2.0 0.0.0.255 area 0
+ network 10.30.5.64 0.0.0.31 area 0
+exit

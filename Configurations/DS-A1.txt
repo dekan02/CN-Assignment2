@@ -1,0 +1,279 @@
+hostname DS-A1
+no ip domain-lookup
+service password-encryption
+enable secret Lab@2026
+username admin privilege 15 secret Lab@2026
+banner motd #Authorized access only#
+line con 0
+ logging synchronous
+line vty 0 4
+ login local
+exit
+ip routing
+spanning-tree mode rapid-pvst
+vlan 110
+ name A-RECEPTION
+exit
+vlan 111
+ name A-PHARMACY
+exit
+vlan 112
+ name A-OUTPATIENT
+exit
+vlan 113
+ name A-LAB
+exit
+vlan 114
+ name A-IMAGING
+exit
+vlan 115
+ name A-SURGERY
+exit
+vlan 150
+ name A-VOICE
+exit
+vlan 160
+ name A-MEDDEV
+exit
+vlan 170
+ name A-AP
+exit
+vlan 180
+ name A-CCTV
+exit
+vlan 199
+ name A-MGMT
+exit
+interface Loopback0
+ ip address 172.16.255.3 255.255.255.255
+ no shutdown
+exit
+spanning-tree vlan 110 priority 4096
+spanning-tree vlan 111 priority 8192
+spanning-tree vlan 112 priority 4096
+spanning-tree vlan 113 priority 8192
+spanning-tree vlan 114 priority 4096
+spanning-tree vlan 115 priority 8192
+spanning-tree vlan 150 priority 4096
+spanning-tree vlan 160 priority 8192
+spanning-tree vlan 170 priority 4096
+spanning-tree vlan 180 priority 8192
+spanning-tree vlan 199 priority 4096
+interface GigabitEthernet1/0/1
+ description to CORE1
+ no switchport
+ ip address 172.16.2.1 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet1/0/2
+ description to CORE2
+ no switchport
+ ip address 172.16.2.5 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet1/0/3
+ description to ACC-A
+ switchport mode trunk
+ switchport trunk allowed vlan 110,111,112,113,114,115,150,160,170,180,199
+ no shutdown
+exit
+interface GigabitEthernet1/0/4
+ description to DS-A2
+ switchport mode trunk
+ switchport trunk allowed vlan 110,111,112,113,114,115,150,160,170,180,199
+ no shutdown
+exit
+ip access-list extended ACL-CCTV
+ permit udp any eq bootpc any eq bootps
+ permit udp any host 224.0.0.2 eq 1985
+ permit ip any host 10.10.36.73
+ deny ip any any
+exit
+ip access-list extended ACL-MEDDEV
+ permit udp any eq bootpc any eq bootps
+ permit udp any host 224.0.0.2 eq 1985
+ permit ip any host 10.10.36.66
+ permit ip any host 10.10.36.68
+ permit ip any host 10.10.36.69
+ deny ip any any
+exit
+interface Vlan110
+ description A-RECEPTION
+ ip address 10.10.2.2 255.255.255.128
+ standby 1 ip 10.10.2.1
+ standby 1 priority 110
+ standby 1 preempt
+ no shutdown
+exit
+interface Vlan111
+ description A-PHARMACY
+ ip address 10.10.3.130 255.255.255.192
+ standby 2 ip 10.10.3.129
+ standby 2 priority 100
+ standby 2 preempt
+ no shutdown
+exit
+interface Vlan112
+ description A-OUTPATIENT
+ ip address 10.10.2.130 255.255.255.128
+ standby 3 ip 10.10.2.129
+ standby 3 priority 110
+ standby 3 preempt
+ no shutdown
+exit
+interface Vlan113
+ description A-LAB
+ ip address 10.10.3.194 255.255.255.192
+ standby 4 ip 10.10.3.193
+ standby 4 priority 100
+ standby 4 preempt
+ no shutdown
+exit
+interface Vlan114
+ description A-IMAGING
+ ip address 10.10.3.2 255.255.255.128
+ standby 5 ip 10.10.3.1
+ standby 5 priority 110
+ standby 5 preempt
+ no shutdown
+exit
+interface Vlan115
+ description A-SURGERY
+ ip address 10.10.4.2 255.255.255.192
+ standby 6 ip 10.10.4.1
+ standby 6 priority 100
+ standby 6 preempt
+ no shutdown
+exit
+interface Vlan150
+ description A-VOICE
+ ip address 10.10.0.2 255.255.255.0
+ standby 7 ip 10.10.0.1
+ standby 7 priority 110
+ standby 7 preempt
+ no shutdown
+exit
+interface Vlan160
+ description A-MEDDEV
+ ip address 10.10.1.2 255.255.255.0
+ standby 8 ip 10.10.1.1
+ standby 8 priority 100
+ standby 8 preempt
+ ip access-group ACL-MEDDEV in
+ no shutdown
+exit
+interface Vlan170
+ description A-AP
+ ip address 10.10.4.66 255.255.255.192
+ standby 9 ip 10.10.4.65
+ standby 9 priority 110
+ standby 9 preempt
+ no shutdown
+exit
+interface Vlan180
+ description A-CCTV
+ ip address 10.10.4.130 255.255.255.192
+ standby 10 ip 10.10.4.129
+ standby 10 priority 100
+ standby 10 preempt
+ ip access-group ACL-CCTV in
+ no shutdown
+exit
+interface Vlan199
+ description A-MGMT
+ ip address 10.10.4.194 255.255.255.192
+ standby 11 ip 10.10.4.193
+ standby 11 priority 110
+ standby 11 preempt
+ no shutdown
+exit
+ip dhcp excluded-address 10.10.2.1 10.10.2.10
+ip dhcp excluded-address 10.10.2.69 10.10.2.126
+ip dhcp pool P-A-RECEPTION
+ network 10.10.2.0 255.255.255.128
+ default-router 10.10.2.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.3.129 10.10.3.138
+ip dhcp excluded-address 10.10.3.165 10.10.3.190
+ip dhcp pool P-A-PHARMACY
+ network 10.10.3.128 255.255.255.192
+ default-router 10.10.3.129
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.2.129 10.10.2.138
+ip dhcp excluded-address 10.10.2.197 10.10.2.254
+ip dhcp pool P-A-OUTPATIENT
+ network 10.10.2.128 255.255.255.128
+ default-router 10.10.2.129
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.3.193 10.10.3.202
+ip dhcp excluded-address 10.10.3.229 10.10.3.254
+ip dhcp pool P-A-LAB
+ network 10.10.3.192 255.255.255.192
+ default-router 10.10.3.193
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.3.1 10.10.3.10
+ip dhcp excluded-address 10.10.3.69 10.10.3.126
+ip dhcp pool P-A-IMAGING
+ network 10.10.3.0 255.255.255.128
+ default-router 10.10.3.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.4.1 10.10.4.10
+ip dhcp excluded-address 10.10.4.37 10.10.4.62
+ip dhcp pool P-A-SURGERY
+ network 10.10.4.0 255.255.255.192
+ default-router 10.10.4.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.0.1 10.10.0.10
+ip dhcp excluded-address 10.10.0.133 10.10.0.254
+ip dhcp pool P-A-VOICE
+ network 10.10.0.0 255.255.255.0
+ default-router 10.10.0.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.1.1 10.10.1.10
+ip dhcp excluded-address 10.10.1.133 10.10.1.254
+ip dhcp pool P-A-MEDDEV
+ network 10.10.1.0 255.255.255.0
+ default-router 10.10.1.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.4.65 10.10.4.74
+ip dhcp excluded-address 10.10.4.101 10.10.4.126
+ip dhcp pool P-A-AP
+ network 10.10.4.64 255.255.255.192
+ default-router 10.10.4.65
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.4.129 10.10.4.138
+ip dhcp excluded-address 10.10.4.165 10.10.4.190
+ip dhcp pool P-A-CCTV
+ network 10.10.4.128 255.255.255.192
+ default-router 10.10.4.129
+ dns-server 10.10.36.70
+exit
+router ospf 1
+ router-id 172.16.255.3
+ passive-interface default
+ no passive-interface GigabitEthernet1/0/1
+ no passive-interface GigabitEthernet1/0/2
+ network 172.16.255.3 0.0.0.0 area 0
+ network 172.16.2.0 0.0.0.3 area 0
+ network 172.16.2.4 0.0.0.3 area 0
+ network 10.10.2.0 0.0.0.127 area 0
+ network 10.10.3.128 0.0.0.63 area 0
+ network 10.10.2.128 0.0.0.127 area 0
+ network 10.10.3.192 0.0.0.63 area 0
+ network 10.10.3.0 0.0.0.127 area 0
+ network 10.10.4.0 0.0.0.63 area 0
+ network 10.10.0.0 0.0.0.255 area 0
+ network 10.10.1.0 0.0.0.255 area 0
+ network 10.10.4.64 0.0.0.63 area 0
+ network 10.10.4.128 0.0.0.63 area 0
+ network 10.10.4.192 0.0.0.63 area 0
+exit

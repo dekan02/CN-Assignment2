@@ -1,0 +1,72 @@
+hostname EDGE1
+no ip domain-lookup
+service password-encryption
+enable secret Lab@2026
+username admin privilege 15 secret Lab@2026
+banner motd #Authorized access only#
+line con 0
+ logging synchronous
+line vty 0 4
+ login local
+exit
+interface Loopback0
+ ip address 172.16.255.12 255.255.255.255
+ no shutdown
+exit
+interface GigabitEthernet0/0
+ description to ISP1
+ ip address 203.0.113.2 255.255.255.248
+ no shutdown
+exit
+interface GigabitEthernet0/1
+ description to FW-HCM
+ ip address 172.16.0.2 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet0/0
+ ip nat outside
+exit
+interface GigabitEthernet0/1
+ ip nat inside
+exit
+ip access-list extended NAT-SRC
+ deny ip 10.0.0.0 0.255.255.255 192.168.99.0 0.0.0.255
+ permit ip 10.0.0.0 0.255.255.255 any
+exit
+ip nat inside source list NAT-SRC interface GigabitEthernet0/0 overload
+ip nat inside source static tcp 10.10.36.82 80 203.0.113.3 80
+ip nat inside source static tcp 10.10.36.82 443 203.0.113.3 443
+ip nat inside source static tcp 10.10.36.83 25 203.0.113.4 25
+ip route 0.0.0.0 0.0.0.0 203.0.113.1
+ip route 10.0.0.0 255.0.0.0 172.16.0.1
+aaa new-model
+aaa authentication login default local
+aaa authentication login EZVPN-LOGIN local
+aaa authorization network EZVPN-GROUP local
+username teleuser secret Tele@2026
+ip local pool TELE-POOL 192.168.99.10 192.168.99.60
+crypto isakmp policy 10
+ encryption aes
+ hash sha
+ authentication pre-share
+ group 2
+exit
+crypto isakmp client configuration group HOSPITAL-VPN
+ key HospitalVPN2026
+ pool TELE-POOL
+ acl 120
+exit
+crypto ipsec transform-set TS-EZ esp-aes esp-sha-hmac
+exit
+crypto dynamic-map DYN 10
+ set transform-set TS-EZ
+ reverse-route
+exit
+crypto map EZMAP client authentication list EZVPN-LOGIN
+crypto map EZMAP isakmp authorization list EZVPN-GROUP
+crypto map EZMAP client configuration address respond
+crypto map EZMAP 65535 ipsec-isakmp dynamic DYN
+access-list 120 permit ip 10.10.36.64 0.0.0.15 192.168.99.0 0.0.0.255
+interface GigabitEthernet0/0
+ crypto map EZMAP
+exit

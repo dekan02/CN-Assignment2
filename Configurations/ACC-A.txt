@@ -1,0 +1,139 @@
+hostname ACC-A
+no ip domain-lookup
+service password-encryption
+enable secret Lab@2026
+username admin privilege 15 secret Lab@2026
+banner motd #Authorized access only#
+line con 0
+ logging synchronous
+line vty 0 4
+ login local
+exit
+spanning-tree mode rapid-pvst
+vlan 110
+ name A-RECEPTION
+exit
+vlan 111
+ name A-PHARMACY
+exit
+vlan 112
+ name A-OUTPATIENT
+exit
+vlan 113
+ name A-LAB
+exit
+vlan 114
+ name A-IMAGING
+exit
+vlan 115
+ name A-SURGERY
+exit
+vlan 150
+ name A-VOICE
+exit
+vlan 160
+ name A-MEDDEV
+exit
+vlan 170
+ name A-AP
+exit
+vlan 180
+ name A-CCTV
+exit
+vlan 199
+ name A-MGMT
+exit
+interface GigabitEthernet0/1
+ description to DS-A1
+ switchport mode trunk
+ switchport trunk allowed vlan 110,111,112,113,114,115,150,160,170,180,199
+ no shutdown
+exit
+interface GigabitEthernet0/2
+ description to DS-A2
+ switchport mode trunk
+ switchport trunk allowed vlan 110,111,112,113,114,115,150,160,170,180,199
+ no shutdown
+exit
+interface FastEthernet0/1
+ description A-RECEPTION
+ switchport mode access
+ switchport access vlan 110
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/2
+ description A-PHARMACY
+ switchport mode access
+ switchport access vlan 111
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/3
+ description A-OUTPATIENT
+ switchport mode access
+ switchport access vlan 112
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/4
+ description A-LAB
+ switchport mode access
+ switchport access vlan 113
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/5
+ description A-IMAGING
+ switchport mode access
+ switchport access vlan 114
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/6
+ description A-SURGERY
+ switchport mode access
+ switchport access vlan 115
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/7
+ description A-AP
+ switchport mode access
+ switchport access vlan 170
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/8
+ description A-CCTV
+ switchport mode access
+ switchport access vlan 180
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/9
+ description A-MEDDEV
+ switchport mode access
+ switchport access vlan 160
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/10
+ description A-VOICE
+ switchport mode access
+ switchport access vlan 150
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/11
+ description A-OUTPATIENT
+ switchport mode access
+ switchport access vlan 112
+ spanning-tree portfast
+ no shutdown
+exit
+interface Vlan199
+ ip address 10.10.4.196 255.255.255.192
+ no shutdown
+exit
+ip default-gateway 10.10.4.193

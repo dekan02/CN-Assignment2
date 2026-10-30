@@ -1,0 +1,107 @@
+hostname SW-DBP-1
+no ip domain-lookup
+service password-encryption
+enable secret Lab@2026
+username admin privilege 15 secret Lab@2026
+banner motd #Authorized access only#
+line con 0
+ logging synchronous
+line vty 0 4
+ login local
+exit
+spanning-tree mode rapid-pvst
+vlan 110
+ name DBP-CLINIC
+exit
+vlan 111
+ name DBP-LABIMG
+exit
+vlan 112
+ name DBP-ADMIN
+exit
+vlan 113
+ name DBP-IT
+exit
+vlan 150
+ name DBP-VOICE
+exit
+vlan 160
+ name DBP-MEDDEV
+exit
+vlan 170
+ name DBP-AP
+exit
+vlan 180
+ name DBP-CCTV
+exit
+vlan 300
+ name DBP-SERVER
+exit
+vlan 320
+ name DBP-WIFI-STAFF
+exit
+vlan 330
+ name DBP-WIFI-GUEST
+exit
+vlan 399
+ name DBP-MGMT
+exit
+interface GigabitEthernet0/1
+ description to R-DBP
+ switchport mode trunk
+ switchport trunk allowed vlan 110,111,112,113,150,160,170,180,300,320,330,399
+ no shutdown
+exit
+interface GigabitEthernet0/2
+ description to SW-DBP-2
+ switchport mode trunk
+ switchport trunk allowed vlan 110,111,112,113,150,160,170,180,300,320,330,399
+ no shutdown
+exit
+interface FastEthernet0/1
+ description DBP-CLINIC
+ switchport mode access
+ switchport access vlan 110
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/2
+ description DBP-LABIMG
+ switchport mode access
+ switchport access vlan 111
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/3
+ description DBP-AP
+ switchport mode access
+ switchport access vlan 170
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/4
+ description DBP-CCTV
+ switchport mode access
+ switchport access vlan 180
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/5
+ description DBP-VOICE
+ switchport mode access
+ switchport access vlan 150
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/6
+ description DBP-CLINIC
+ switchport mode access
+ switchport access vlan 110
+ spanning-tree portfast
+ no shutdown
+exit
+interface Vlan399
+ ip address 10.20.5.66 255.255.255.224
+ no shutdown
+exit
+ip default-gateway 10.20.5.65

@@ -1,0 +1,41 @@
+hostname EDGE2
+no ip domain-lookup
+service password-encryption
+enable secret Lab@2026
+username admin privilege 15 secret Lab@2026
+banner motd #Authorized access only#
+line con 0
+ logging synchronous
+line vty 0 4
+ login local
+exit
+interface Loopback0
+ ip address 172.16.255.13 255.255.255.255
+ no shutdown
+exit
+interface GigabitEthernet0/0
+ description to ISP2
+ ip address 198.51.100.2 255.255.255.248
+ no shutdown
+exit
+interface GigabitEthernet0/1
+ description to FW-HCM
+ ip address 172.16.0.6 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet0/0
+ ip nat outside
+exit
+interface GigabitEthernet0/1
+ ip nat inside
+exit
+ip access-list extended NAT-SRC
+ deny ip 10.0.0.0 0.255.255.255 192.168.99.0 0.0.0.255
+ permit ip 10.0.0.0 0.255.255.255 any
+exit
+ip nat inside source list NAT-SRC interface GigabitEthernet0/0 overload
+ip nat inside source static tcp 10.10.36.82 80 198.51.100.3 80
+ip nat inside source static tcp 10.10.36.82 443 198.51.100.3 443
+ip nat inside source static tcp 10.10.36.83 25 198.51.100.4 25
+ip route 0.0.0.0 0.0.0.0 198.51.100.1
+ip route 10.0.0.0 255.0.0.0 172.16.0.5

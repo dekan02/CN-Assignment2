@@ -1,0 +1,54 @@
+hostname R-WAN1
+no ip domain-lookup
+service password-encryption
+enable secret Lab@2026
+username admin privilege 15 secret Lab@2026
+banner motd #Authorized access only#
+line con 0
+ logging synchronous
+line vty 0 4
+ login local
+exit
+interface Loopback0
+ ip address 172.16.255.7 255.255.255.255
+ no shutdown
+exit
+interface GigabitEthernet0/0
+ description to CORE1
+ ip address 172.16.1.2 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet0/1
+ description leased line to DBP
+ ip address 172.16.1.9 255.255.255.252
+ no shutdown
+exit
+crypto isakmp policy 10
+ encryption aes
+ hash sha
+ authentication pre-share
+ group 2
+ lifetime 86400
+exit
+crypto isakmp key HospitalWAN2026 address 172.16.1.10
+crypto ipsec transform-set TS-WAN esp-aes esp-sha-hmac
+exit
+crypto map WANMAP 10 ipsec-isakmp
+ set peer 172.16.1.10
+ set transform-set TS-WAN
+ match address 110
+exit
+access-list 110 permit ip 10.10.0.0 0.0.255.255 10.20.0.0 0.0.255.255
+access-list 110 permit ip 10.30.0.0 0.0.255.255 10.20.0.0 0.0.255.255
+interface GigabitEthernet0/1
+ crypto map WANMAP
+exit
+router ospf 1
+ router-id 172.16.255.7
+ passive-interface default
+ no passive-interface GigabitEthernet0/0
+ no passive-interface GigabitEthernet0/1
+ network 172.16.255.7 0.0.0.0 area 0
+ network 172.16.1.0 0.0.0.3 area 0
+ network 172.16.1.8 0.0.0.3 area 0
+exit

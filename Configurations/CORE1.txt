@@ -1,0 +1,159 @@
+hostname CORE1
+no ip domain-lookup
+service password-encryption
+enable secret Lab@2026
+username admin privilege 15 secret Lab@2026
+banner motd #Authorized access only#
+line con 0
+ logging synchronous
+line vty 0 4
+ login local
+exit
+ip routing
+spanning-tree mode rapid-pvst
+vlan 320
+ name WIFI-STAFF
+exit
+vlan 330
+ name WIFI-GUEST
+exit
+vlan 399
+ name CORE-MGMT
+exit
+vlan 998
+ name CORE-TRANSIT
+exit
+interface Loopback0
+ ip address 172.16.255.1 255.255.255.255
+ no shutdown
+exit
+spanning-tree vlan 320,998 priority 4096
+spanning-tree vlan 330,998 priority 4096
+spanning-tree vlan 399,998 priority 4096
+interface GigabitEthernet1/0/1
+ description to FW-HCM inside
+ no switchport
+ ip address 172.16.0.10 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet1/0/2
+ description to CORE2
+ switchport mode trunk
+ switchport trunk allowed vlan 320,330,399,998
+ no shutdown
+exit
+interface Vlan998
+ description core transit
+ ip address 172.16.0.13 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet1/0/3
+ description to DS-A1
+ no switchport
+ ip address 172.16.2.2 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet1/0/4
+ description to DS-A2
+ no switchport
+ ip address 172.16.2.10 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet1/0/5
+ description to DS-B1
+ no switchport
+ ip address 172.16.3.2 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet1/0/6
+ description to DS-B2
+ no switchport
+ ip address 172.16.3.10 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet1/0/7
+ description to R-WAN1
+ no switchport
+ ip address 172.16.1.1 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet1/0/8
+ description to WLC
+ switchport mode trunk
+ switchport trunk native vlan 399
+ switchport trunk allowed vlan 320,330,399
+ no shutdown
+exit
+ip access-list extended ACL-GUEST
+ permit udp any eq bootpc any eq bootps
+ permit udp any host 224.0.0.2 eq 1985
+ permit udp any host 10.10.36.70 eq domain
+ deny ip any 10.0.0.0 0.255.255.255
+ deny ip any 172.16.0.0 0.15.255.255
+ deny ip any 192.168.0.0 0.0.255.255
+ permit ip any any
+exit
+interface Vlan320
+ description WIFI-STAFF
+ ip address 10.10.32.2 255.255.254.0
+ standby 1 ip 10.10.32.1
+ standby 1 priority 110
+ standby 1 preempt
+ no shutdown
+exit
+interface Vlan330
+ description WIFI-GUEST
+ ip address 10.10.34.2 255.255.254.0
+ standby 2 ip 10.10.34.1
+ standby 2 priority 110
+ standby 2 preempt
+ ip access-group ACL-GUEST in
+ no shutdown
+exit
+interface Vlan399
+ description CORE-MGMT
+ ip address 10.10.36.2 255.255.255.192
+ standby 3 ip 10.10.36.1
+ standby 3 priority 110
+ standby 3 preempt
+ no shutdown
+exit
+ip dhcp excluded-address 10.10.32.1 10.10.32.10
+ip dhcp excluded-address 10.10.33.5 10.10.33.254
+ip dhcp pool P-WIFI-STAFF
+ network 10.10.32.0 255.255.254.0
+ default-router 10.10.32.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.34.1 10.10.34.10
+ip dhcp excluded-address 10.10.35.5 10.10.35.254
+ip dhcp pool P-WIFI-GUEST
+ network 10.10.34.0 255.255.254.0
+ default-router 10.10.34.1
+ dns-server 10.10.36.70
+exit
+ip route 0.0.0.0 0.0.0.0 172.16.0.9
+ip route 10.10.36.64 255.255.255.240 172.16.0.9
+ip route 10.10.36.80 255.255.255.240 172.16.0.9
+router ospf 1
+ router-id 172.16.255.1
+ passive-interface default
+ no passive-interface Vlan998
+ no passive-interface GigabitEthernet1/0/3
+ no passive-interface GigabitEthernet1/0/4
+ no passive-interface GigabitEthernet1/0/5
+ no passive-interface GigabitEthernet1/0/6
+ no passive-interface GigabitEthernet1/0/7
+ network 172.16.255.1 0.0.0.0 area 0
+ network 172.16.0.12 0.0.0.3 area 0
+ network 172.16.2.0 0.0.0.3 area 0
+ network 172.16.2.8 0.0.0.3 area 0
+ network 172.16.3.0 0.0.0.3 area 0
+ network 172.16.3.8 0.0.0.3 area 0
+ network 172.16.1.0 0.0.0.3 area 0
+ network 10.10.32.0 0.0.1.255 area 0
+ network 10.10.34.0 0.0.1.255 area 0
+ network 10.10.36.0 0.0.0.63 area 0
+ default-information originate
+ redistribute static subnets
+exit

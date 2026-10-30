@@ -1,0 +1,279 @@
+hostname DS-B1
+no ip domain-lookup
+service password-encryption
+enable secret Lab@2026
+username admin privilege 15 secret Lab@2026
+banner motd #Authorized access only#
+line con 0
+ logging synchronous
+line vty 0 4
+ login local
+exit
+ip routing
+spanning-tree mode rapid-pvst
+vlan 210
+ name B-ER
+exit
+vlan 211
+ name B-INPATIENT
+exit
+vlan 212
+ name B-ADMIN
+exit
+vlan 213
+ name B-FINANCE-HR
+exit
+vlan 214
+ name B-TRAINING
+exit
+vlan 215
+ name B-IT
+exit
+vlan 250
+ name B-VOICE
+exit
+vlan 260
+ name B-MEDDEV
+exit
+vlan 270
+ name B-AP
+exit
+vlan 280
+ name B-CCTV
+exit
+vlan 299
+ name B-MGMT
+exit
+interface Loopback0
+ ip address 172.16.255.5 255.255.255.255
+ no shutdown
+exit
+spanning-tree vlan 210 priority 4096
+spanning-tree vlan 211 priority 8192
+spanning-tree vlan 212 priority 4096
+spanning-tree vlan 213 priority 8192
+spanning-tree vlan 214 priority 4096
+spanning-tree vlan 215 priority 8192
+spanning-tree vlan 250 priority 4096
+spanning-tree vlan 260 priority 8192
+spanning-tree vlan 270 priority 4096
+spanning-tree vlan 280 priority 8192
+spanning-tree vlan 299 priority 4096
+interface GigabitEthernet1/0/1
+ description to CORE1
+ no switchport
+ ip address 172.16.3.1 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet1/0/2
+ description to CORE2
+ no switchport
+ ip address 172.16.3.5 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet1/0/3
+ description to ACC-B
+ switchport mode trunk
+ switchport trunk allowed vlan 210,211,212,213,214,215,250,260,270,280,299
+ no shutdown
+exit
+interface GigabitEthernet1/0/4
+ description to DS-B2
+ switchport mode trunk
+ switchport trunk allowed vlan 210,211,212,213,214,215,250,260,270,280,299
+ no shutdown
+exit
+ip access-list extended ACL-CCTV
+ permit udp any eq bootpc any eq bootps
+ permit udp any host 224.0.0.2 eq 1985
+ permit ip any host 10.10.36.73
+ deny ip any any
+exit
+ip access-list extended ACL-MEDDEV
+ permit udp any eq bootpc any eq bootps
+ permit udp any host 224.0.0.2 eq 1985
+ permit ip any host 10.10.36.66
+ permit ip any host 10.10.36.68
+ permit ip any host 10.10.36.69
+ deny ip any any
+exit
+interface Vlan210
+ description B-ER
+ ip address 10.10.19.130 255.255.255.192
+ standby 1 ip 10.10.19.129
+ standby 1 priority 110
+ standby 1 preempt
+ no shutdown
+exit
+interface Vlan211
+ description B-INPATIENT
+ ip address 10.10.16.2 255.255.255.0
+ standby 2 ip 10.10.16.1
+ standby 2 priority 100
+ standby 2 preempt
+ no shutdown
+exit
+interface Vlan212
+ description B-ADMIN
+ ip address 10.10.19.2 255.255.255.128
+ standby 3 ip 10.10.19.1
+ standby 3 priority 110
+ standby 3 preempt
+ no shutdown
+exit
+interface Vlan213
+ description B-FINANCE-HR
+ ip address 10.10.19.194 255.255.255.192
+ standby 4 ip 10.10.19.193
+ standby 4 priority 100
+ standby 4 preempt
+ no shutdown
+exit
+interface Vlan214
+ description B-TRAINING
+ ip address 10.10.20.2 255.255.255.192
+ standby 5 ip 10.10.20.1
+ standby 5 priority 110
+ standby 5 preempt
+ no shutdown
+exit
+interface Vlan215
+ description B-IT
+ ip address 10.10.21.2 255.255.255.224
+ standby 6 ip 10.10.21.1
+ standby 6 priority 100
+ standby 6 preempt
+ no shutdown
+exit
+interface Vlan250
+ description B-VOICE
+ ip address 10.10.17.2 255.255.255.0
+ standby 7 ip 10.10.17.1
+ standby 7 priority 110
+ standby 7 preempt
+ no shutdown
+exit
+interface Vlan260
+ description B-MEDDEV
+ ip address 10.10.18.2 255.255.255.0
+ standby 8 ip 10.10.18.1
+ standby 8 priority 100
+ standby 8 preempt
+ ip access-group ACL-MEDDEV in
+ no shutdown
+exit
+interface Vlan270
+ description B-AP
+ ip address 10.10.20.66 255.255.255.192
+ standby 9 ip 10.10.20.65
+ standby 9 priority 110
+ standby 9 preempt
+ no shutdown
+exit
+interface Vlan280
+ description B-CCTV
+ ip address 10.10.20.130 255.255.255.192
+ standby 10 ip 10.10.20.129
+ standby 10 priority 100
+ standby 10 preempt
+ ip access-group ACL-CCTV in
+ no shutdown
+exit
+interface Vlan299
+ description B-MGMT
+ ip address 10.10.20.194 255.255.255.192
+ standby 11 ip 10.10.20.193
+ standby 11 priority 110
+ standby 11 preempt
+ no shutdown
+exit
+ip dhcp excluded-address 10.10.19.129 10.10.19.138
+ip dhcp excluded-address 10.10.19.165 10.10.19.190
+ip dhcp pool P-B-ER
+ network 10.10.19.128 255.255.255.192
+ default-router 10.10.19.129
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.16.1 10.10.16.10
+ip dhcp excluded-address 10.10.16.133 10.10.16.254
+ip dhcp pool P-B-INPATIENT
+ network 10.10.16.0 255.255.255.0
+ default-router 10.10.16.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.19.1 10.10.19.10
+ip dhcp excluded-address 10.10.19.69 10.10.19.126
+ip dhcp pool P-B-ADMIN
+ network 10.10.19.0 255.255.255.128
+ default-router 10.10.19.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.19.193 10.10.19.202
+ip dhcp excluded-address 10.10.19.229 10.10.19.254
+ip dhcp pool P-B-FINANCE-HR
+ network 10.10.19.192 255.255.255.192
+ default-router 10.10.19.193
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.20.1 10.10.20.10
+ip dhcp excluded-address 10.10.20.37 10.10.20.62
+ip dhcp pool P-B-TRAINING
+ network 10.10.20.0 255.255.255.192
+ default-router 10.10.20.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.21.1 10.10.21.10
+ip dhcp excluded-address 10.10.21.21 10.10.21.30
+ip dhcp pool P-B-IT
+ network 10.10.21.0 255.255.255.224
+ default-router 10.10.21.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.17.1 10.10.17.10
+ip dhcp excluded-address 10.10.17.133 10.10.17.254
+ip dhcp pool P-B-VOICE
+ network 10.10.17.0 255.255.255.0
+ default-router 10.10.17.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.18.1 10.10.18.10
+ip dhcp excluded-address 10.10.18.133 10.10.18.254
+ip dhcp pool P-B-MEDDEV
+ network 10.10.18.0 255.255.255.0
+ default-router 10.10.18.1
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.20.65 10.10.20.74
+ip dhcp excluded-address 10.10.20.101 10.10.20.126
+ip dhcp pool P-B-AP
+ network 10.10.20.64 255.255.255.192
+ default-router 10.10.20.65
+ dns-server 10.10.36.70
+exit
+ip dhcp excluded-address 10.10.20.129 10.10.20.138
+ip dhcp excluded-address 10.10.20.165 10.10.20.190
+ip dhcp pool P-B-CCTV
+ network 10.10.20.128 255.255.255.192
+ default-router 10.10.20.129
+ dns-server 10.10.36.70
+exit
+router ospf 1
+ router-id 172.16.255.5
+ passive-interface default
+ no passive-interface GigabitEthernet1/0/1
+ no passive-interface GigabitEthernet1/0/2
+ network 172.16.255.5 0.0.0.0 area 0
+ network 172.16.3.0 0.0.0.3 area 0
+ network 172.16.3.4 0.0.0.3 area 0
+ network 10.10.19.128 0.0.0.63 area 0
+ network 10.10.16.0 0.0.0.255 area 0
+ network 10.10.19.0 0.0.0.127 area 0
+ network 10.10.19.192 0.0.0.63 area 0
+ network 10.10.20.0 0.0.0.63 area 0
+ network 10.10.21.0 0.0.0.31 area 0
+ network 10.10.17.0 0.0.0.255 area 0
+ network 10.10.18.0 0.0.0.255 area 0
+ network 10.10.20.64 0.0.0.63 area 0
+ network 10.10.20.128 0.0.0.63 area 0
+ network 10.10.20.192 0.0.0.63 area 0
+exit

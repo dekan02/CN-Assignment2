@@ -1,0 +1,62 @@
+hostname FW-HCM
+enable password Lab@2026
+username admin password Lab@2026 privilege 15
+interface GigabitEthernet1/1
+ nameif outside1
+ security-level 0
+ ip address 172.16.0.1 255.255.255.252
+ no shutdown
+interface GigabitEthernet1/2
+ nameif outside2
+ security-level 0
+ ip address 172.16.0.5 255.255.255.252
+ no shutdown
+interface GigabitEthernet1/3
+ nameif inside
+ security-level 100
+ ip address 172.16.0.9 255.255.255.252
+ no shutdown
+interface GigabitEthernet1/4
+ nameif dmz
+ security-level 50
+ ip address 10.10.36.81 255.255.255.240
+ no shutdown
+interface GigabitEthernet1/5
+ nameif servers
+ security-level 90
+ ip address 10.10.36.65 255.255.255.240
+ no shutdown
+route outside1 0.0.0.0 0.0.0.0 172.16.0.2 1
+route outside2 0.0.0.0 0.0.0.0 172.16.0.6 1
+route inside 10.0.0.0 255.0.0.0 172.16.0.10 1
+route outside1 192.168.99.0 255.255.255.0 172.16.0.2 1
+access-list OUT-IN extended permit icmp any any echo-reply
+access-list OUT-IN extended permit icmp any any time-exceeded
+access-list OUT-IN extended permit icmp any any unreachable
+access-list OUT-IN extended permit tcp any host 10.10.36.82 eq www
+access-list OUT-IN extended permit tcp any host 10.10.36.82 eq https
+access-list OUT-IN extended permit tcp any host 10.10.36.83 eq smtp
+access-list OUT-IN extended permit tcp 192.168.99.0 255.255.255.0 host 10.10.36.66 eq https
+access-list OUT-IN extended permit icmp 192.168.99.0 255.255.255.0 10.10.36.64 255.255.255.240 echo
+access-list OUT-IN extended deny ip any any log
+access-group OUT-IN in interface outside1
+access-group OUT-IN in interface outside2
+access-list DMZ-IN extended permit tcp host 10.10.36.82 host 10.10.36.66 eq 8443
+access-list DMZ-IN extended permit udp host 10.10.36.70 10.10.36.80 255.255.255.240 eq domain
+access-list DMZ-IN extended deny ip 10.10.36.80 255.255.255.240 10.0.0.0 255.0.0.0 log
+access-list DMZ-IN extended permit tcp 10.10.36.80 255.255.255.240 any eq www
+access-list DMZ-IN extended permit tcp 10.10.36.80 255.255.255.240 any eq https
+access-list DMZ-IN extended permit tcp 10.10.36.80 255.255.255.240 any eq smtp
+access-list DMZ-IN extended permit udp 10.10.36.80 255.255.255.240 any eq domain
+access-list DMZ-IN extended permit udp 10.10.36.80 255.255.255.240 any eq ntp
+access-list DMZ-IN extended permit icmp 10.10.36.80 255.255.255.240 any
+access-list DMZ-IN extended deny ip any any log
+access-group DMZ-IN in interface dmz
+access-list SERVERS-IN extended permit udp host 10.10.36.72 10.0.0.0 255.0.0.0 eq snmp
+access-list SERVERS-IN extended permit icmp host 10.10.36.72 10.0.0.0 255.0.0.0
+access-list SERVERS-IN extended permit tcp 10.10.36.64 255.255.255.240 any eq www
+access-list SERVERS-IN extended permit tcp 10.10.36.64 255.255.255.240 any eq https
+access-list SERVERS-IN extended permit udp 10.10.36.64 255.255.255.240 any eq ntp
+access-list SERVERS-IN extended permit icmp 10.10.36.64 255.255.255.240 any
+access-list SERVERS-IN extended deny ip any any log
+access-group SERVERS-IN in interface servers

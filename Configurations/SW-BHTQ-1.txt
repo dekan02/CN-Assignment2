@@ -1,0 +1,107 @@
+hostname SW-BHTQ-1
+no ip domain-lookup
+service password-encryption
+enable secret Lab@2026
+username admin privilege 15 secret Lab@2026
+banner motd #Authorized access only#
+line con 0
+ logging synchronous
+line vty 0 4
+ login local
+exit
+spanning-tree mode rapid-pvst
+vlan 110
+ name BHTQ-CLINIC
+exit
+vlan 111
+ name BHTQ-LABIMG
+exit
+vlan 112
+ name BHTQ-ADMIN
+exit
+vlan 113
+ name BHTQ-IT
+exit
+vlan 150
+ name BHTQ-VOICE
+exit
+vlan 160
+ name BHTQ-MEDDEV
+exit
+vlan 170
+ name BHTQ-AP
+exit
+vlan 180
+ name BHTQ-CCTV
+exit
+vlan 300
+ name BHTQ-SERVER
+exit
+vlan 320
+ name BHTQ-WIFI-STAFF
+exit
+vlan 330
+ name BHTQ-WIFI-GUEST
+exit
+vlan 399
+ name BHTQ-MGMT
+exit
+interface GigabitEthernet0/1
+ description to R-BHTQ
+ switchport mode trunk
+ switchport trunk allowed vlan 110,111,112,113,150,160,170,180,300,320,330,399
+ no shutdown
+exit
+interface GigabitEthernet0/2
+ description to SW-BHTQ-2
+ switchport mode trunk
+ switchport trunk allowed vlan 110,111,112,113,150,160,170,180,300,320,330,399
+ no shutdown
+exit
+interface FastEthernet0/1
+ description BHTQ-CLINIC
+ switchport mode access
+ switchport access vlan 110
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/2
+ description BHTQ-LABIMG
+ switchport mode access
+ switchport access vlan 111
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/3
+ description BHTQ-AP
+ switchport mode access
+ switchport access vlan 170
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/4
+ description BHTQ-CCTV
+ switchport mode access
+ switchport access vlan 180
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/5
+ description BHTQ-VOICE
+ switchport mode access
+ switchport access vlan 150
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/6
+ description BHTQ-CLINIC
+ switchport mode access
+ switchport access vlan 110
+ spanning-tree portfast
+ no shutdown
+exit
+interface Vlan399
+ ip address 10.30.5.66 255.255.255.224
+ no shutdown
+exit
+ip default-gateway 10.30.5.65

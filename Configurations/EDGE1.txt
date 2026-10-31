@@ -54,10 +54,8 @@ exit
 crypto isakmp client configuration group HOSPITAL-VPN
  key HospitalVPN2026
  pool TELE-POOL
- acl 120
 exit
 crypto ipsec transform-set TS-EZ esp-aes esp-sha-hmac
-exit
 crypto dynamic-map DYN 10
  set transform-set TS-EZ
  reverse-route

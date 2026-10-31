@@ -1,0 +1,38 @@
+
+#### CAM-A >>> ping -n 3 10.10.36.73
+ping -n 3 10.10.36.73
+
+Pinging 10.10.36.73 with 32 bytes of data:
+
+stage tests finished
+Reply from 10.10.36.73: bytes=32 time<1ms TTL=125
+Reply from 10.10.36.73: bytes=32 time<1ms TTL=125
+Reply from 10.10.36.73: bytes=32 time<1ms TTL=125
+
+Ping statistics for 10.10.36.73:
+    Packets: Sent = 3, Received = 3, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+C:\>
+#### MED-A >>> ping -n 3 10.10.2.139
+ping -n 3 10.10.2.139
+
+Pinging 10.10.2.139 with 32 bytes of data:
+
+Reply from 10.10.1.3: Destination host unreachable.
+Reply from 10.10.1.3: Destination host unreachable.
+Reply from 10.10.1.3: Destination host unreachable.
+
+Ping statistics for 10.10.2.139:
+    Packets: Sent = 3, Received = 0, Lost = 3 (100% loss),
+
+C:\>
+#### MED-A >>> ping -n 3 10.10.36.66
+ping -n 3 10.10.36.66
+
+Pinging 10.10.36.66 with 32 bytes of data:
+
+
+
+C:\>

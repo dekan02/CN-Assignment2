@@ -106,6 +106,47 @@ Mọi kết quả phải chụp màn hình và đưa vào báo cáo.
 | 9 | VPN | TELE-PC kết nối VPN rồi mở HIS-APP | Mở được; không thông tới các mạng khác |
 | 10 | Chặn theo ACL | Camera ping HIS-APP; thiết bị y tế ping PC | Không thành công; ping NVR/HIS thành công |
 
-## 8. Nộp bài
+## 8. Kết quả kiểm chứng trong Packet Tracer 9.0.1
+
+Mô phỏng đã dựng bằng script (78 thiết bị, 85 trong 86 liên kết, thiếu liên kết WLC vì không có mẫu WLC) và lưu tại `Simulation/hospital-network.pkt`. Các thiết bị đầu cuối gom thành 12 cụm theo từng switch để dễ nhìn.
+
+### Tính năng đã kiểm chứng
+
+| Tính năng | Kết quả |
+|---|---|
+| HSRP trên Catalyst 3650-24PS | Chạy; CORE1 là Active cho VLAN 320, 330, 399 và thấy Standby ở CORE2 |
+| OSPF | CORE1 có 6 neighbor FULL (CORE2, DS-A1, DS-A2, DS-B1, DS-B2, R-WAN1); R-WAN1 học đủ route của trụ sở |
+| IPsec trên 2911 | Cần cấp `securityk9` (license, `write memory`, `reload`); sau đó nạp cấu hình không lỗi |
+| ASA 5506-X | Cấu hình được qua tab CLI của thiết bị (script không truy cập được CLI của ASA) |
+| DHCP chia đôi dải trên DS-A1 và DS-A2 | PC nhận địa chỉ sau `ipconfig /renew`; chi nhánh cũng nhận địa chỉ |
+| Ping và gateway | PC lấy đúng gateway là VIP HSRP |
+
+### Kịch bản đã chạy
+
+| Kịch bản | Kết quả |
+|---|---|
+| 1 Cùng VLAN | Thông |
+| 2a Khác VLAN, cùng tòa | Thông, TTL 127 (qua một router) |
+| 2b Khác VLAN, khác tòa | Thông (mất gói đầu do ARP) |
+| 3a Trụ sở sang DBP và BHTQ | Thông, TTL 124 và 122 |
+| 3b DBP sang BHTQ | Thông |
+| 6a Ra Internet | PC trụ sở ping được WEB-INET 192.0.2.10 (TTL 122) |
+| 10 ACL | Camera ping HIS-APP và thiết bị y tế ping PC: không thông; camera ping NVR: thông |
+| 4c DMZ không vào LAN | PORTAL ping PC LAN: không thông |
+
+### Điểm Packet Tracer khác với thiết bị thật
+
+- ASA trong Packet Tracer không nhận từ khóa `https`, `ntp`, `log` và không có `time-exceeded`; cấu hình dùng cổng 443, 123, bỏ `log`. ACL không thể xóa cả nhóm bằng `clear configure access-list`, phải xóa từng dòng; thứ tự dòng quyết định kết quả nên dòng `deny` tới LAN đặt trước các dòng `permit`.
+- ASA trong Packet Tracer không theo dõi trạng thái ICMP: ping từ LAN tới PORTAL không có hồi đáp vì `DMZ-IN` chặn gói trả về tới 10.0.0.0/8. Cách kiểm tra đúng là mở HTTP từ PC tới 10.10.36.82.
+- Lệnh `crypto ipsec transform-set` không vào chế độ con, nên không có `exit` ngay sau đó.
+- Easy VPN: lệnh `acl` trong nhóm `crypto isakmp client configuration group` không được nhận, nên không cấu hình split tunnel; ACL 120 vẫn được định nghĩa trên EDGE1.
+- Lệnh `terminal length 0` không được nhận; script `tracert` chỉ trả về tiêu đề, cần chụp màn hình Command Prompt để lấy các hop.
+- Reload nhiều router cùng lúc làm Packet Tracer đóng đột ngột; cấp license từng hai router một và lưu file trước mỗi lần.
+
+### Còn lại
+
+Kịch bản 4a, 4b, 5, 6b, 6c, 7, 8, 9 chưa chạy trong mô phỏng: cần mở trình duyệt web trên PC, LAPTOP-GUEST nối AP-A, tắt cổng để kiểm tra HSRP và chuyển đổi Internet, Easy VPN trên TELE-PC. WLC chưa dựng nên SSID hiện chỉ trình bày trong thiết kế.
+
+## 9. Nộp bài
 
 Lưu file `.pkt` vào thư mục `Simulation/`, báo cáo vào `Report/`; tải cả hai lên BKeL.

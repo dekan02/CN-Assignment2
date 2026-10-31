@@ -32,7 +32,6 @@ crypto isakmp policy 10
 exit
 crypto isakmp key HospitalWAN2026 address 172.16.1.14
 crypto ipsec transform-set TS-WAN esp-aes esp-sha-hmac
-exit
 crypto map WANMAP 10 ipsec-isakmp
  set peer 172.16.1.14
  set transform-set TS-WAN

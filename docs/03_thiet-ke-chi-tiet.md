@@ -46,7 +46,7 @@ Quy ước: mỗi site một khối /16 (10.10 trụ sở, 10.20 DBP, 10.30 BHTQ
 
 - OSPF area 0 giữa core, distribution, WAN router và router chi nhánh; mọi SVI là passive.
 - CORE1 có route mặc định tĩnh về firewall và quảng bá `default-information originate`; CORE1 cũng có route tĩnh tới subnet server farm và DMZ (sau firewall) và phân phối vào OSPF.
-- Firewall có hai route mặc định bằng nhau qua EDGE1 và EDGE2 (chia tải ECMP trên hai giao diện outside); mất liên kết tới một EDGE thì route đó biến mất và lưu lượng đi qua EDGE còn lại.
+- Firewall thật có hai route mặc định bằng nhau qua EDGE1 và EDGE2 (chia tải ECMP trên hai giao diện outside); trong Packet Tracer thay bằng hai tuyến 0.0.0.0/1 và 128.0.0.0/1, mỗi tuyến một đường chính và một đường dự phòng (xem tài liệu 05); mất liên kết tới một EDGE thì route đó biến mất và lưu lượng đi qua EDGE còn lại.
 - HSRP: nhóm theo thứ tự VLAN; distribution 1 ưu tiên cao cho các VLAN thứ tự lẻ, distribution 2 cho thứ tự chẵn; STP root theo cùng quy tắc để lưu lượng không đi vòng.
 - DHCP: cấp tại distribution/core cho VLAN do thiết bị đó phục vụ; mỗi VLAN chia hai nửa dải cho hai thiết bị (split scope) nên một thiết bị hỏng thì thiết bị kia vẫn cấp được địa chỉ.
 - Giới hạn trong thiết kế thật: cặp firewall HA nối vào cả hai core; mô phỏng Packet Tracer dùng một firewall duy nhất nối vào CORE1.

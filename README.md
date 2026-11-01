@@ -35,14 +35,14 @@ Lệnh này kiểm tra mô hình (không trùng VLAN và subnet, đủ chỗ cho
 | Việc | Trạng thái |
 |---|---|
 | Nghiên cứu | Xong |
-| Bước 1: phân tích yêu cầu | Bản nháp |
-| Bước 2: thiết kế chi tiết, IP plan, sơ đồ | Bản nháp |
-| Bước 3: lưu lượng và băng thông | Bản nháp, thiếu báo giá nhà mạng |
-| Bước 4: dựng mô phỏng Packet Tracer | Chưa làm |
-| Bước 5: kiểm thử ping, traceroute | Chưa làm |
-| Bước 6: đánh giá | Bản nháp |
-| Bước 7: báo cáo và nộp BKeL | Chưa làm |
-| Kiểm chứng các tính năng chưa chắc trong Packet Tracer | Chưa làm |
+| Bước 1: phân tích yêu cầu | Xong |
+| Bước 2: thiết kế chi tiết, IP plan, sơ đồ | Xong |
+| Bước 3: lưu lượng và băng thông | Xong, chi phí thuê bao là ước lượng vì chưa có báo giá thực của nhà mạng |
+| Bước 4: dựng mô phỏng Packet Tracer | Xong |
+| Bước 5: kiểm thử ping, traceroute | Xong, kết quả ở docs/05 mục 8 |
+| Bước 6: đánh giá | Xong |
+| Bước 7: báo cáo và nộp BKeL | Báo cáo trong thư mục Report; còn bước tải lên BKeL |
+| Kiểm chứng các tính năng chưa chắc trong Packet Tracer | Xong |
 
 ## Quy ước
 

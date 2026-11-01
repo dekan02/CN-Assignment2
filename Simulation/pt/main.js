@@ -1,4 +1,4 @@
-var STAGE = "tests";
+var STAGE = "none";
 var PROBE_DEV = "R-DBP";
 var PROBE_CMDS = ["configure terminal", "crypto ipsec transform-set TS-X esp-aes esp-sha-hmac", "exit", "exit", "show running-config | include hostname"];
 var ONLY = ["R-WAN2","R-BHTQ"];
@@ -270,8 +270,8 @@ function chk(list) {
 }
 
 var VER = {
-  "ACC-A": ["show vlan brief", "show interfaces trunk", "show interfaces status"],
-  "DS-A1": ["show ip dhcp pool", "show ip interface brief"]
+  "EDGE1": ["show ip nat translations", "show ip nat statistics", "show ip route"],
+  "INET": ["show ip route"]
 };
 function verify() {
     for (var nm in VER) {
@@ -394,6 +394,16 @@ if (STAGE === "renew") pcRun(["ipconfig /renew"]);
 if (STAGE === "ips") pcRun(["ipconfig"]);
 if (STAGE === "tests") tests();
 if (STAGE === "hosts") hosts();
+
+function tele() {
+    var d = net.getDevice("TELE-PC");
+    var p = d.getPort("FastEthernet0");
+    p.setDhcpClientFlag(false);
+    p.setIpSubnetMask("198.51.101.10", "255.255.255.0");
+    p.setDefaultGateway("198.51.101.1");
+    log("TELE-PC static set");
+}
+if (STAGE === "tele") tele();
 if (STAGE === "ver") verify();
 if (STAGE === "chk") chk(["EDGE1","EDGE2","R-WAN1","R-WAN2","R-DBP","R-BHTQ","ISP1","ISP2"]);
 if (STAGE === "layout") { try { layout(); } catch (eL) { log("layout error " + eL); } }

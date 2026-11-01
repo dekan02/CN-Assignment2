@@ -26,8 +26,13 @@ interface GigabitEthernet1/5
  security-level 90
  ip address 10.10.36.65 255.255.255.240
  no shutdown
-route outside1 0.0.0.0 0.0.0.0 172.16.0.2 1
-route outside2 0.0.0.0 0.0.0.0 172.16.0.6 1
+route outside1 0.0.0.0 128.0.0.0 172.16.0.2 1
+route outside2 0.0.0.0 128.0.0.0 172.16.0.6 2
+route outside2 128.0.0.0 128.0.0.0 172.16.0.6 1
+route outside1 128.0.0.0 128.0.0.0 172.16.0.2 2
+route outside1 172.16.0.2 255.255.255.255 172.16.0.2 1
+route outside2 172.16.0.6 255.255.255.255 172.16.0.6 1
+route inside 172.16.0.10 255.255.255.255 172.16.0.10 1
 route inside 10.0.0.0 255.0.0.0 172.16.0.10 1
 route outside1 192.168.99.0 255.255.255.0 172.16.0.2 1
 access-list OUT-IN extended permit icmp any any echo-reply
@@ -37,15 +42,19 @@ access-list OUT-IN extended permit tcp any host 10.10.36.82 eq 443
 access-list OUT-IN extended permit tcp any host 10.10.36.83 eq smtp
 access-list OUT-IN extended permit tcp 192.168.99.0 255.255.255.0 host 10.10.36.66 eq 443
 access-list OUT-IN extended permit icmp 192.168.99.0 255.255.255.0 10.10.36.64 255.255.255.240 echo
+access-list OUT-IN extended deny ip 192.168.99.0 255.255.255.0 any
+access-list OUT-IN extended permit tcp any 10.0.0.0 255.0.0.0
+access-list OUT-IN extended permit icmp 172.16.0.0 255.255.0.0 any
+access-list OUT-IN extended permit icmp 203.0.113.0 255.255.255.248 any
+access-list OUT-IN extended permit icmp 198.51.100.0 255.255.255.248 any
+access-list OUT-IN extended permit icmp 100.64.0.0 255.192.0.0 any
 access-list OUT-IN extended deny ip any any
 access-group OUT-IN in interface outside1
 access-group OUT-IN in interface outside2
 access-list DMZ-IN extended permit tcp host 10.10.36.82 host 10.10.36.66 eq 8443
 access-list DMZ-IN extended permit udp host 10.10.36.70 10.10.36.80 255.255.255.240 eq domain
+access-list DMZ-IN extended permit tcp 10.10.36.80 255.255.255.240 any
 access-list DMZ-IN extended deny ip 10.10.36.80 255.255.255.240 10.0.0.0 255.0.0.0
-access-list DMZ-IN extended permit tcp 10.10.36.80 255.255.255.240 any eq www
-access-list DMZ-IN extended permit tcp 10.10.36.80 255.255.255.240 any eq 443
-access-list DMZ-IN extended permit tcp 10.10.36.80 255.255.255.240 any eq smtp
 access-list DMZ-IN extended permit udp 10.10.36.80 255.255.255.240 any eq domain
 access-list DMZ-IN extended permit udp 10.10.36.80 255.255.255.240 any eq 123
 access-list DMZ-IN extended permit icmp 10.10.36.80 255.255.255.240 any

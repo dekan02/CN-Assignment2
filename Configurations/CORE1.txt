@@ -78,10 +78,10 @@ interface GigabitEthernet1/0/7
  no shutdown
 exit
 interface GigabitEthernet1/0/8
- description to WLC
- switchport mode trunk
- switchport trunk native vlan 399
- switchport trunk allowed vlan 320,330,399
+ description to WLC guest SSID
+ switchport mode access
+ switchport access vlan 330
+ spanning-tree portfast
  no shutdown
 exit
 ip access-list extended ACL-GUEST

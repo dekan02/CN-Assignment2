@@ -245,15 +245,26 @@ def core_config(host):
     lines += routed("GigabitEthernet1/0/7", T.addr(wkey, 0), T.net(wkey), f"to {wan}")
     ospf_nets.append(T.net(wkey))
     passive_except.append("GigabitEthernet1/0/7")
-    lines += [
-        "interface GigabitEthernet1/0/8",
-        " description to WLC",
-        " switchport mode trunk",
-        " switchport trunk native vlan 399",
-        " switchport trunk allowed vlan 320,330,399",
-        " no shutdown",
-        "exit",
-    ]
+    if index == 0:
+        lines += [
+            "interface GigabitEthernet1/0/8",
+            " description to WLC guest SSID",
+            " switchport mode access",
+            " switchport access vlan 330",
+            " spanning-tree portfast",
+            " no shutdown",
+            "exit",
+        ]
+    else:
+        lines += [
+            "interface GigabitEthernet1/0/8",
+            " description to WLC",
+            " switchport mode trunk",
+            " switchport trunk native vlan 399",
+            " switchport trunk allowed vlan 320,330,399",
+            " no shutdown",
+            "exit",
+        ]
     lines += acl_block(["guest"], "HCM")
     for s in subs:
         local = s.gateway_a if index == 0 else s.gateway_b
@@ -479,6 +490,9 @@ def inet_config():
     lines += router_port("GigabitEthernet0/1", b[2], ipaddress.ip_network(b[0]), "to ISP2")
     lines += router_port("GigabitEthernet0/2", c[1], ipaddress.ip_network(c[0]), "web server LAN")
     lines += [
+        "interface Loopback8",
+        " ip address 8.8.8.8 255.255.255.255",
+        "exit",
         f"ip route {T.PUBLIC['isp1-edge1'][0].split('/')[0]} 255.255.255.248 {a[1]}",
         f"ip route {T.PUBLIC['isp2-edge2'][0].split('/')[0]} 255.255.255.248 {b[1]}",
         f"ip route {T.PUBLIC['tele-lan'][0].split('/')[0]} 255.255.255.0 {b[1]}",
@@ -584,8 +598,13 @@ def fw_config():
         " security-level 90",
         f" ip address {T.FW_SERVER_GW} 255.255.255.240",
         " no shutdown",
-        f"route outside1 0.0.0.0 0.0.0.0 {T.addr('fw-e1', 1)} 1",
-        f"route outside2 0.0.0.0 0.0.0.0 {T.addr('fw-e2', 1)} 1",
+        f"route outside1 0.0.0.0 128.0.0.0 {T.addr('fw-e1', 1)} 1",
+        f"route outside2 0.0.0.0 128.0.0.0 {T.addr('fw-e2', 1)} 2",
+        f"route outside2 128.0.0.0 128.0.0.0 {T.addr('fw-e2', 1)} 1",
+        f"route outside1 128.0.0.0 128.0.0.0 {T.addr('fw-e1', 1)} 2",
+        f"route outside1 {T.addr('fw-e1', 1)} 255.255.255.255 {T.addr('fw-e1', 1)} 1",
+        f"route outside2 {T.addr('fw-e2', 1)} 255.255.255.255 {T.addr('fw-e2', 1)} 1",
+        f"route inside {T.addr('fw-c1', 1)} 255.255.255.255 {T.addr('fw-c1', 1)} 1",
         f"route inside 10.0.0.0 255.0.0.0 {T.addr('fw-c1', 1)} 1",
         f"route outside1 {T.VPN_NET} 255.255.255.0 {T.addr('fw-e1', 1)} 1",
         "access-list OUT-IN extended permit icmp any any echo-reply",
@@ -595,15 +614,19 @@ def fw_config():
         f"access-list OUT-IN extended permit tcp any host {T.DMZ_HOSTS['MAIL-GW']} eq smtp",
         f"access-list OUT-IN extended permit tcp {T.VPN_NET} 255.255.255.0 host {T.SERVERS['HIS-APP']} eq 443",
         f"access-list OUT-IN extended permit icmp {T.VPN_NET} 255.255.255.0 10.10.36.64 255.255.255.240 echo",
+        f"access-list OUT-IN extended deny ip {T.VPN_NET} 255.255.255.0 any",
+        "access-list OUT-IN extended permit tcp any 10.0.0.0 255.0.0.0",
+        "access-list OUT-IN extended permit icmp 172.16.0.0 255.255.0.0 any",
+        "access-list OUT-IN extended permit icmp 203.0.113.0 255.255.255.248 any",
+        "access-list OUT-IN extended permit icmp 198.51.100.0 255.255.255.248 any",
+        "access-list OUT-IN extended permit icmp 100.64.0.0 255.192.0.0 any",
         "access-list OUT-IN extended deny ip any any",
         "access-group OUT-IN in interface outside1",
         "access-group OUT-IN in interface outside2",
         f"access-list DMZ-IN extended permit tcp host {T.DMZ_HOSTS['PORTAL']} host {T.SERVERS['HIS-APP']} eq 8443",
         f"access-list DMZ-IN extended permit udp host {T.SERVERS['AD-DNS']} 10.10.36.80 255.255.255.240 eq domain",
+        "access-list DMZ-IN extended permit tcp 10.10.36.80 255.255.255.240 any",
         "access-list DMZ-IN extended deny ip 10.10.36.80 255.255.255.240 10.0.0.0 255.0.0.0",
-        "access-list DMZ-IN extended permit tcp 10.10.36.80 255.255.255.240 any eq www",
-        "access-list DMZ-IN extended permit tcp 10.10.36.80 255.255.255.240 any eq 443",
-        "access-list DMZ-IN extended permit tcp 10.10.36.80 255.255.255.240 any eq smtp",
         "access-list DMZ-IN extended permit udp 10.10.36.80 255.255.255.240 any eq domain",
         "access-list DMZ-IN extended permit udp 10.10.36.80 255.255.255.240 any eq 123",
         "access-list DMZ-IN extended permit icmp 10.10.36.80 255.255.255.240 any",

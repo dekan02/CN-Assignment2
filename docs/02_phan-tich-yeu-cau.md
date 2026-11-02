@@ -33,6 +33,14 @@ Mạng 3 lớp rút gọn:
 
 Lý do không dùng collapsed core: hai tòa cách DC 50 m và có 26 switch access; distribution theo tòa giữ lưu lượng broadcast và STP trong từng tòa, giảm số uplink cần kéo về DC (4 distribution thay vì 26 switch).
 
+### Vị trí đặt thiết bị cân bằng tải
+
+Đề yêu cầu đặt cân bằng tải ở những nơi cần thiết. Thiết kế đặt chúng tại bốn điểm: hai đường Internet tại firewall (ECMP trên hai giao diện outside, mất một đường thì tuyến dự phòng thay thế); cổng gateway của mỗi VLAN tại distribution và core (HSRP chia nửa số VLAN cho mỗi thiết bị active); các uplink 10 GbE và 40 GbE gộp bằng LACP; server cổng thông tin và cổng email ở DMZ sau một cặp cân bằng tải ứng dụng khi cần mở rộng. Không dùng cân bằng tải riêng cho server HIS và PACS ở giai đoạn đầu vì mỗi hệ thống chạy một cặp active-standby.
+
+### Tiện dụng và mỹ quan
+
+Cáp ngang đi trong trần giả và hộp kỹ thuật (shaft) sẵn có, không đi nổi trong hành lang bệnh nhân; mỗi tầng một tủ IDF đặt trong phòng kỹ thuật, không đặt ở khu chờ; AP gắn trần ở màu cùng trần để không lộ thiết bị; toàn bộ thiết bị lõi tập trung ở phòng dữ liệu riêng cách tòa nhà 50 m nên không có thiết bị ồn hay tỏa nhiệt trong khu khám chữa bệnh; nhãn cáp và sơ đồ ghi trên tủ để bảo trì nhanh. Cách đặt này cũng giữ cho thay thế và mở rộng thiết bị không phải đục phá khu vực đang hoạt động.
+
 ## 3. Danh sách khảo sát (checklist)
 
 Việc cần làm tại công trình trước khi chốt thiết kế:

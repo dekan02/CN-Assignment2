@@ -71,7 +71,7 @@ Firewall vùng (`Configurations/FW-HCM.txt`):
 
 ## 3. Vấn đề còn lại
 
-- Chưa kiểm chứng trong Packet Tracer: HSRP trên 3650, ECMP trên ASA, Easy VPN, WLC với LAP (xem bảng tại tài liệu 05).
+- Giới hạn của Packet Tracer đã gặp (xem tài liệu 05): ECMP trên ASA làm NAT và đường về lệch nên thay bằng hai tuyến /1 chia theo đích; ASA không theo dõi trạng thái TCP nên thêm một dòng cho phép TCP trả về vào dải 10.0.0.0/8; không có mẫu WLC nên dùng AccessPoint-PT cho SSID khách (SSID nhân viên chưa dựng); ACL của ASA không lọc được time-exceeded nên OUT-IN cho phép ICMP từ các dải liên kết của nhà mạng để traceroute ra Internet hiện đủ hop; ARP của ASA không gắn theo cổng nên sau khi một cổng outside chớp tắt phải tắt rồi bật lại cổng còn lại để xóa mục ARP sai. HSRP trên 3650, OSPF, IPsec site-to-site, Easy VPN, NAT, failover đều chạy đúng.
 - IPS/IDS, lọc URL, phát hiện phishing, GPON không mô phỏng được.
 - Chi phí thiết bị và thuê bao chưa có báo giá thật.
 - Chuyển đổi dự phòng khi nhà mạng hỏng ngầm (link vẫn lên nhưng không ra Internet) cần IP SLA hoặc giám sát đường đi; cấu hình hiện chỉ xử lý được mất link.

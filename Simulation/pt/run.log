@@ -1,0 +1,47 @@
+EDGE1 prompt EDGE1#
+==== EDGE1
+show ip nat translations
+Pro  Inside global     Inside local       Outside local      Outside global
+tcp 203.0.113.3:443    10.10.36.82:443    ---                ---
+tcp 203.0.113.3:80     10.10.36.82:80     ---                ---
+tcp 203.0.113.3:80     10.10.36.82:80     198.51.101.10:1025 198.51.101.10:1025
+tcp 203.0.113.3:80     10.10.36.82:80     198.51.101.10:1030 198.51.101.10:1030
+tcp 203.0.113.4:25     10.10.36.83:25     ---                ---
+
+EDGE1#show ip nat statistics
+Total translations: 5 (3 static, 2 dynamic, 5 extended)
+Outside Interfaces: GigabitEthernet0/0
+Inside Interfaces: GigabitEthernet0/1
+Hits: 27  Misses: 6
+Expired translations: 1
+Dynamic mappings:
+EDGE1#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is 203.0.113.1 to network 0.0.0.0
+
+S    10.0.0.0/8 [1/0] via 172.16.0.1
+     172.16.0.0/16 is variably subnetted, 3 subnets, 2 masks
+C       172.16.0.0/30 is directly connected, GigabitEthernet0/1
+L       172.16.0.2/32 is directly connected, GigabitEthernet0/1
+C       172.16.255.12/32 is directly connected, Loopback0
+     203.0.113.0/24 is variably subnetted, 2 subnets, 2 masks
+C       203.0.113.0/29 is directly connected, GigabitEthernet0/0
+L       203.0.113.2/32 is directly connected, GigabitEthernet0/0
+S*   0.0.0.0/0 [1/0] via 203.0.113.1
+
+EDGE1#
+INET prompt INET#
+==== INET
+
+INET#how ip route
+         ^
+% Invalid input detected at '^' marker.
+	
+INET#

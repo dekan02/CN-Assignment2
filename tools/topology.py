@@ -111,7 +111,7 @@ WIRING = [
     ("CORE2", "Gi1/0/6", "DS-B2", "Gi1/0/2", "Đồng chéo"),
     ("CORE1", "Gi1/0/7", "R-WAN1", "Gi0/0", "Đồng chéo"),
     ("CORE2", "Gi1/0/7", "R-WAN2", "Gi0/0", "Đồng chéo"),
-    ("CORE1", "Gi1/0/8", "WLC", "Port 1", "Đồng thẳng"),
+    ("CORE1", "Gi1/0/8", "WLC", "Port 0", "Đồng thẳng"),
     ("R-WAN1", "Gi0/1", "R-DBP", "Gi0/0", "Đồng chéo"),
     ("R-WAN2", "Gi0/1", "R-BHTQ", "Gi0/0", "Đồng chéo"),
     ("DS-A1", "Gi1/0/3", "ACC-A", "Gi0/1", "Đồng chéo"),

@@ -1,0 +1,23 @@
+
+#### CAM-A >>> ping -n 3 10.10.36.66
+ping -n 3 10.10.36.66
+
+Pinging 10.10.36.66 with 32 bytes of data:
+
+stage tests finished
+Reply from 10.10.4.131: Destination host unreachable.
+Reply from 10.10.4.131: Destination host unreachable.
+Reply from 10.10.4.131: Destination host unreachable.
+
+Ping statistics for 10.10.36.66:
+    Packets: Sent = 3, Received = 0, Lost = 3 (100% loss),
+
+C:\>
+#### CAM-A >>> ping -n 3 10.10.36.73
+ping -n 3 10.10.36.73
+
+Pinging 10.10.36.73 with 32 bytes of data:
+
+
+
+C:\>

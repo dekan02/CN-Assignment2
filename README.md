@@ -42,11 +42,8 @@ Lệnh này kiểm tra mô hình (không trùng VLAN và subnet, đủ chỗ cho
 | Bước 5: kiểm thử ping, traceroute | Xong, kết quả ở docs/05 mục 8 |
 | Bước 6: đánh giá | Xong |
 | Bước 7: báo cáo và nộp BKeL | To Do |
-| Kiểm chứng các tính năng chưa chắc trong Packet Tracer | Xong |
 
 ## Quy ước
 
 - Nhánh `develop` là nhánh làm việc chung; mỗi việc một nhánh con, gộp vào `develop` khi xong.
 - Tài liệu viết bằng tiếng Việt, giữ thuật ngữ kỹ thuật tiếng Anh.
-- Mã nguồn không có chú thích.
-- Mật khẩu trong `Configurations/` chỉ là giá trị dùng cho bài lab.

@@ -90,7 +90,7 @@ Tài liệu này trả lời câu hỏi vì sao thiết kế như vậy, dành c
 - **Quyết định**: SSID nhân viên dùng 802.1X; SSID khách và bệnh nhân dùng captive portal, client isolation, giới hạn băng thông, và bị ACL chặn mọi dải nội bộ.
 - **Lý do**: khách mang thiết bị không kiểm soát được vào mạng; nếu cùng VLAN với nhân viên thì một máy nhiễm mã độc có thể quét thẳng vào HIS.
 - **Đặt ACL ở core**: lưu lượng khách bị lọc trước khi tới firewall, nên không có đường nào từ khách tới máy trạm.
-- **Chi nhánh**: dùng chế độ chuyển mạch cục bộ để lưu lượng khách không chạy qua đường thuê riêng và không ăn băng thông của HIS.
+- **Chi nhánh**: chuyển mạch cục bộ đưa frame từ AP vào VLAN tại chỗ. Khách ra Internet qua đường thuê riêng về HCM. Cần áp QoS trên WAN để lưu lượng khách không làm nghẽn HIS.
 
 ### Firewall bốn vùng (outside 0, dmz 50, servers 90, inside 100)
 

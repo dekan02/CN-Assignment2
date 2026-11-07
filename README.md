@@ -41,7 +41,7 @@ Lệnh này kiểm tra mô hình (không trùng VLAN và subnet, đủ chỗ cho
 | Bước 4: dựng mô phỏng Packet Tracer | Xong |
 | Bước 5: kiểm thử ping, traceroute | Xong, kết quả ở docs/05 mục 8 |
 | Bước 6: đánh giá | Xong |
-| Bước 7: báo cáo và nộp BKeL | To Do |
+| Bước 7: báo cáo và nộp BKeL | Có báo cáo chương trình thường tại `Report/Assignment2.pdf` và bản nguồn `Report/Assignment2.md`. Điền thông tin nhóm và nộp cùng file mô phỏng sau khi chốt kết quả demo. |
 
 ## Quy ước
 

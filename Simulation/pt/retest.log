@@ -1,0 +1,72 @@
+Packet Tracer 9.0.1 - hospital-network.pkt
+[same-vlan] PC-A-OUTPATIENT-1 > ping -n 3 10.10.2.140
+[same-vlan] Pinging 10.10.2.140 with 32 bytes of data:
+[inter-vlan] PC-B-TRAINING > ping -n 3 10.10.3.165
+[inter-vlan] Pinging 10.10.3.165 with 32 bytes of data:
+[hcm-dbp] PC-A-PHARMACY > ping -n 3 10.20.0.11
+[hcm-dbp] Pinging 10.20.0.11 with 32 bytes of data:
+[hcm-bhtq] PC-A-RECEPTION > ping -n 3 10.30.0.11
+[hcm-bhtq] Pinging 10.30.0.11 with 32 bytes of data:
+[dbp-bhtq] PC-DBP-CLINIC-1 > ping -n 3 10.30.0.11
+[dbp-bhtq] Pinging 10.30.0.11 with 32 bytes of data:
+[internet] PC-A-OUTPATIENT-2 > ping -n 3 192.0.2.10
+[internet] Pinging 192.0.2.10 with 32 bytes of data:
+[camera-block] CAM-A > ping -n 3 10.10.36.66
+[camera-block] Pinging 10.10.36.66 with 32 bytes of data:
+[same-vlan] Reply from 10.10.2.140: bytes=32 time=752ms TTL=128
+[hcm-bhtq] Reply from 10.30.0.11: bytes=32 time=307ms TTL=124
+[camera-block] Reply from 10.10.4.131: Destination host unreachable.
+[inter-vlan] Reply from 10.10.3.165: bytes=32 time=636ms TTL=125
+[hcm-dbp] Reply from 10.20.0.11: bytes=32 time=503ms TTL=124
+[same-vlan] Reply from 10.10.2.140: bytes=32 time<1ms TTL=128
+[camera-block] Reply from 10.10.4.131: Destination host unreachable.
+[hcm-bhtq] Reply from 10.30.0.11: bytes=32 time=32ms TTL=124
+[inter-vlan] Reply from 10.10.3.165: bytes=32 time=12ms TTL=125
+[hcm-dbp] Reply from 10.20.0.11: bytes=32 time=10ms TTL=124
+[same-vlan] Reply from 10.10.2.140: bytes=32 time<1ms TTL=128
+[same-vlan] Ping statistics for 10.10.2.140:
+[same-vlan] Packets: Sent = 3, Received = 3, Lost = 0 (0% loss),
+[same-vlan] Approximate round trip times in milli-seconds:
+[same-vlan] Minimum = 0ms, Maximum = 752ms, Average = 250ms
+[same-vlan] C:\>
+[same-vlan] Tracing route to 10.20.0.11 over a maximum of 30 hops:
+[camera-block] Reply from 10.10.4.131: Destination host unreachable.
+[camera-block] Ping statistics for 10.10.36.66:
+[camera-block] Packets: Sent = 3, Received = 0, Lost = 3 (100% loss),
+[camera-block] C:\>
+[hcm-dbp] Reply from 10.20.0.11: bytes=32 time<1ms TTL=124
+[hcm-dbp] Ping statistics for 10.20.0.11:
+[hcm-dbp] Packets: Sent = 3, Received = 3, Lost = 0 (0% loss),
+[hcm-dbp] Approximate round trip times in milli-seconds:
+[hcm-dbp] Minimum = 0ms, Maximum = 503ms, Average = 171ms
+[hcm-dbp] C:\>
+[hcm-bhtq] Reply from 10.30.0.11: bytes=32 time=350ms TTL=124
+[hcm-bhtq] Ping statistics for 10.30.0.11:
+[hcm-bhtq] Packets: Sent = 3, Received = 3, Lost = 0 (0% loss),
+[hcm-bhtq] Approximate round trip times in milli-seconds:
+[hcm-bhtq] Minimum = 32ms, Maximum = 350ms, Average = 229ms
+[hcm-bhtq] C:\>
+[same-vlan] Trace complete.
+[same-vlan] C:\>
+[same-vlan] Pinging 10.30.0.11 with 32 bytes of data:
+[dbp-bhtq] Request timed out.
+[internet] Request timed out.
+[same-vlan] C:\>
+[inter-vlan] Request timed out.
+[inter-vlan] Ping statistics for 10.10.3.165:
+[inter-vlan] Packets: Sent = 3, Received = 2, Lost = 1 (34% loss),
+[inter-vlan] Approximate round trip times in milli-seconds:
+[inter-vlan] Minimum = 12ms, Maximum = 636ms, Average = 324ms
+[inter-vlan] C:\>
+[dbp-bhtq] Request timed out.
+[internet] Request timed out.
+[internet] Reply from 192.0.2.10: bytes=32 time<1ms TTL=122
+[internet] Ping statistics for 192.0.2.10:
+[internet] Packets: Sent = 3, Received = 1, Lost = 2 (67% loss),
+[internet] Approximate round trip times in milli-seconds:
+[internet] Minimum = 0ms, Maximum = 0ms, Average = 0ms
+[internet] C:\>
+[dbp-bhtq] Request timed out.
+[dbp-bhtq] Ping statistics for 10.30.0.11:
+[dbp-bhtq] Packets: Sent = 3, Received = 0, Lost = 3 (100% loss),
+[dbp-bhtq] C:\>

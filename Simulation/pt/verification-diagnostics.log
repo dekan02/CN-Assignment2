@@ -1,0 +1,215 @@
+
+=== PC-B-TRAINING ===
+ipconfig
+
+FastEthernet0 Connection:(default port)
+
+   Connection-specific DNS Suffix..:
+   Link-local IPv6 Address.........: FE80::207:ECFF:FE67:7167
+   IPv6 Address....................: ::
+   IPv4 Address....................: 10.10.20.11
+   Subnet Mask.....................: 255.255.255.192
+   Default Gateway.................: ::
+                                     10.10.20.1
+
+Bluetooth Connection:
+
+   Connection-specific DNS Suffix..:
+   Link-local IPv6 Address.........: ::
+   IPv6 Address....................: ::
+   IPv4 Address....................: 0.0.0.0
+   Subnet Mask.....................: 0.0.0.0
+   Default Gateway.................: ::
+                                     0.0.0.0
+
+C:\>
+=== PC-B-INPATIENT-1 ===
+ipconfig
+
+FastEthernet0 Connection:(default port)
+
+   Connection-specific DNS Suffix..:
+   Link-local IPv6 Address.........: FE80::210:11FF:FEAD:C8D1
+   IPv6 Address....................: ::
+   IPv4 Address....................: 10.10.16.11
+   Subnet Mask.....................: 255.255.255.0
+   Default Gateway.................: ::
+                                     10.10.16.1
+
+Bluetooth Connection:
+
+   Connection-specific DNS Suffix..:
+   Link-local IPv6 Address.........: ::
+   IPv6 Address....................: ::
+   IPv4 Address....................: 0.0.0.0
+   Subnet Mask.....................: 0.0.0.0
+   Default Gateway.................: ::
+                                     0.0.0.0
+
+C:\>
+=== PC-A-PHARMACY ===
+ipconfig
+
+FastEthernet0 Connection:(default port)
+
+   Connection-specific DNS Suffix..:
+   Link-local IPv6 Address.........: FE80::201:63FF:FE31:4347
+   IPv6 Address....................: ::
+   IPv4 Address....................: 10.10.3.165
+   Subnet Mask.....................: 255.255.255.192
+   Default Gateway.................: ::
+                                     10.10.3.129
+
+Bluetooth Connection:
+
+   Connection-specific DNS Suffix..:
+   Link-local IPv6 Address.........: ::
+   IPv6 Address....................: ::
+   IPv4 Address....................: 0.0.0.0
+   Subnet Mask.....................: 0.0.0.0
+   Default Gateway.................: ::
+                                     0.0.0.0
+
+C:\>
+=== PC-DBP-CLINIC-1 ===
+ipconfig
+
+FastEthernet0 Connection:(default port)
+
+   Connection-specific DNS Suffix..:
+   Link-local IPv6 Address.........: FE80::209:7CFF:FEE6:B44A
+   IPv6 Address....................: ::
+   IPv4 Address....................: 10.20.0.12
+   Subnet Mask.....................: 255.255.255.0
+   Default Gateway.................: ::
+                                     10.20.0.1
+
+Bluetooth Connection:
+
+   Connection-specific DNS Suffix..:
+   Link-local IPv6 Address.........: ::
+   IPv6 Address....................: ::
+   IPv4 Address....................: 0.0.0.0
+   Subnet Mask.....................: 0.0.0.0
+   Default Gateway.................: ::
+                                     0.0.0.0
+
+C:\>
+=== PC-BHTQ-CLINIC-1 ===
+ipconfig
+
+FastEthernet0 Connection:(default port)
+
+   Connection-specific DNS Suffix..:
+   Link-local IPv6 Address.........: FE80::201:96FF:FEE8:BBC0
+   IPv6 Address....................: ::
+   IPv4 Address....................: 10.30.0.11
+   Subnet Mask.....................: 255.255.255.0
+   Default Gateway.................: ::
+                                     10.30.0.1
+
+Bluetooth Connection:
+
+   Connection-specific DNS Suffix..:
+   Link-local IPv6 Address.........: ::
+   IPv6 Address....................: ::
+   IPv4 Address....................: 0.0.0.0
+   Subnet Mask.....................: 0.0.0.0
+   Default Gateway.................: ::
+                                     0.0.0.0
+
+C:\>
+=== CORE1 ===
+Authorized access only
+
+CORE1>show ip ospf neighbor
+
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+172.16.255.3      1   FULL/DR         00:00:38    172.16.2.1      GigabitEthernet1/0/3
+172.16.255.5      1   FULL/DR         00:00:29    172.16.3.1      GigabitEthernet1/0/5
+172.16.255.6      1   FULL/DR         00:00:29    172.16.3.9      GigabitEthernet1/0/6
+172.16.255.4      1   FULL/DR         00:00:39    172.16.2.9      GigabitEthernet1/0/4
+172.16.255.7      1   FULL/DR         00:00:29    172.16.1.2      GigabitEthernet1/0/7
+172.16.255.2      1   FULL/DR         00:00:29    172.16.0.14     Vlan998
+CORE1>show ip route
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is 172.16.0.9 to network 0.0.0.0
+
+     10.0.0.0/8 is variably subnetted, 54 subnets, 8 masks
+O       10.10.0.0/24 [110/2] via 172.16.2.1, 00:03:46, GigabitEthernet1/0/3
+                     [110/2] via 172.16.2.9, 00:03:46, GigabitEthernet1/0/4
+O       10.10.1.0/24 [110/2] via 172.16.2.1, 00:03:46, GigabitEthernet1/0/3
+                     [110/2] via 172.16.2.9, 00:03:46, GigabitEthernet1/0/4
+O       10.10.2.0/25 [110/2] via 172.16.2.1, 00:03:46, GigabitEthernet1/0/3
+                     [110/2] via 172.16.2.9, 00:03:46, GigabitEthernet1/0/4
+O       10.10.2.128/25 [110/2] via 172.16.2.1, 00:03:46, GigabitEthernet1/0/3
+                       [110/2] via 172.16.2.9, 00:03:46, GigabitEthernet1/0/4
+O       10.10.3.0/25 [110/2] via 172.16.2.1, 00:03:46, GigabitEthernet1/0/3
+                     [110/2] via 172.16.2.9, 00:03:46, GigabitEthernet1/0/4
+O       10.10.3.128/26 [110/2] via 172.16.2.1, 00:03:46, GigabitEthernet1/0/3
+ --More--
+=== CORE2 ===
+Authorized access only
+
+CORE2>show ip ospf neighbor
+
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+172.16.255.3      1   FULL/DR         00:00:29    172.16.2.5      GigabitEthernet1/0/3
+172.16.255.5      1   FULL/DR         00:00:29    172.16.3.5      GigabitEthernet1/0/5
+172.16.255.8      1   FULL/DR         00:00:39    172.16.1.6      GigabitEthernet1/0/7
+172.16.255.4      1   FULL/DR         00:00:29    172.16.2.13     GigabitEthernet1/0/4
+172.16.255.6      1   FULL/DR         00:00:39    172.16.3.13     GigabitEthernet1/0/6
+172.16.255.1      1   FULL/BDR        00:00:29    172.16.0.13     Vlan998
+CORE2>show ip route
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is 172.16.0.13 to network 0.0.0.0
+
+     10.0.0.0/8 is variably subnetted, 54 subnets, 8 masks
+O       10.10.0.0/24 [110/2] via 172.16.2.5, 00:03:51, GigabitEthernet1/0/3
+                     [110/2] via 172.16.2.13, 00:03:51, GigabitEthernet1/0/4
+O       10.10.1.0/24 [110/2] via 172.16.2.5, 00:03:51, GigabitEthernet1/0/3
+                     [110/2] via 172.16.2.13, 00:03:51, GigabitEthernet1/0/4
+O       10.10.2.0/25 [110/2] via 172.16.2.5, 00:03:51, GigabitEthernet1/0/3
+                     [110/2] via 172.16.2.13, 00:03:51, GigabitEthernet1/0/4
+O       10.10.2.128/25 [110/2] via 172.16.2.5, 00:03:51, GigabitEthernet1/0/3
+                       [110/2] via 172.16.2.13, 00:03:51, GigabitEthernet1/0/4
+O       10.10.3.0/25 [110/2] via 172.16.2.5, 00:03:51, GigabitEthernet1/0/3
+                     [110/2] via 172.16.2.13, 00:03:51, GigabitEthernet1/0/4
+O       10.10.3.128/26 [110/2] via 172.16.2.5, 00:03:51, GigabitEthernet1/0/3
+ --More--
+=== R-WAN1 ===
+Authorized access only
+
+R-WAN1>show ip ospf neighbor
+
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+172.16.255.1      1   FULL/BDR        00:00:39    172.16.1.1      GigabitEthernet0/0
+172.16.255.9      1   FULL/DR         00:00:29    172.16.1.10     GigabitEthernet0/1
+R-WAN1>
+=== R-WAN2 ===
+Authorized access only
+
+R-WAN2>show ip ospf neighbor
+
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+172.16.255.2      1   FULL/BDR        00:00:39    172.16.1.5      GigabitEthernet0/0
+172.16.255.10     1   FULL/DR         00:00:39    172.16.1.14     GigabitEthernet0/1
+R-WAN2>

@@ -78,7 +78,7 @@ Việc cần làm tại công trình trước khi chốt thiết kế:
 - **Số lượng AP**: 30 mỗi tòa (6 AP mỗi tầng, tăng ở sảnh tầng 1 và phòng chờ), 14 AP mỗi chi nhánh. Đây là giả định để lập dự toán; số chính xác phải theo kết quả site survey.
 - **SSID nhân viên** (VLAN 320, 802.1X qua RADIUS/AD): truy cập tài nguyên theo vai trò.
 - **SSID khách và bệnh nhân** (VLAN 330): captive portal, client isolation, giới hạn 8 Mbps xuống và 2 Mbps lên mỗi thiết bị, ACL chặn mọi mạng nội bộ (`ACL-GUEST`), chỉ cho phép DNS tới server DNS và đi ra Internet.
-- **WLC** một cặp tại DC, các AP dùng CAPWAP về WLC; tại chi nhánh dùng chế độ chuyển mạch cục bộ để lưu lượng khách không phải đi qua WAN.
+- **WLC** một cặp tại DC, các AP dùng CAPWAP về WLC. Tại chi nhánh, AP chuyển frame vào VLAN cục bộ. Lưu lượng Internet của khách vẫn đi qua WAN về HCM, qua firewall và NAT tại trụ sở.
 - Camera và thiết bị y tế không kết nối WiFi khách; thiết bị y tế không dây (nếu có) dùng SSID riêng, VLAN riêng (đề xuất bổ sung ở giai đoạn sau).
 
 ## 6. Server farm, DMZ và firewall

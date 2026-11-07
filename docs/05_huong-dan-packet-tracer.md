@@ -86,6 +86,8 @@ VPN người dùng từ xa (nếu có): trên TELE-PC mở Desktop > VPN, nhập
 
 Mọi kết quả phải chụp màn hình và đưa vào báo cáo.
 
+Trước khi chạy, dùng `ipconfig` để lấy địa chỉ IPv4 hiện tại của từng PC. Địa chỉ DHCP có thể đổi giữa hai lần mở file, nên dùng tên thiết bị trong bảng để xác định máy đích. Lần chạy ngày 03/11/2026, PC-A-PHARMACY nhận 10.10.3.165 thay cho địa chỉ 10.10.3.139 từng được ghi ở mục 8.
+
 | STT | Kịch bản | Thao tác | Kết quả mong đợi |
 |---|---|---|---|
 | 1 | Cùng VLAN | PC-A-OUTPATIENT-1 ping PC-A-OUTPATIENT-2 | Thành công |

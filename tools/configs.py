@@ -469,6 +469,8 @@ def isp_config(name):
         lines += router_port("GigabitEthernet0/0", pub[1], ipaddress.ip_network(pub[0]), "to EDGE1")
         lines += router_port("GigabitEthernet0/1", up[1], ipaddress.ip_network(up[0]), "to INET")
         lines += [f"ip route 0.0.0.0 0.0.0.0 {up[2]}"]
+        portal_public = ipaddress.ip_address(pub[1]) + 2
+        lines += [f"ip route {portal_public} 255.255.255.255 {pub[2]}"]
         return lines
     pub = T.PUBLIC["isp2-edge2"]
     up = T.PUBLIC["isp2-inet"]
@@ -607,6 +609,7 @@ def fw_config():
         f"route inside {T.addr('fw-c1', 1)} 255.255.255.255 {T.addr('fw-c1', 1)} 1",
         f"route inside 10.0.0.0 255.0.0.0 {T.addr('fw-c1', 1)} 1",
         f"route outside1 {T.VPN_NET} 255.255.255.0 {T.addr('fw-e1', 1)} 1",
+        f"route outside1 {T.PUBLIC['tele-lan'][2]} 255.255.255.255 {T.addr('fw-e1', 1)} 1",
         "access-list OUT-IN extended permit icmp any any echo-reply",
         "access-list OUT-IN extended permit icmp any any unreachable",
         f"access-list OUT-IN extended permit tcp any host {T.DMZ_HOSTS['PORTAL']} eq www",

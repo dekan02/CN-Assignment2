@@ -20,3 +20,4 @@ interface GigabitEthernet0/1
  no shutdown
 exit
 ip route 0.0.0.0 0.0.0.0 100.64.1.2
+ip route 203.0.113.3 255.255.255.255 203.0.113.2

@@ -35,6 +35,7 @@ route outside2 172.16.0.6 255.255.255.255 172.16.0.6 1
 route inside 172.16.0.10 255.255.255.255 172.16.0.10 1
 route inside 10.0.0.0 255.0.0.0 172.16.0.10 1
 route outside1 192.168.99.0 255.255.255.0 172.16.0.2 1
+route outside1 198.51.101.10 255.255.255.255 172.16.0.2 1
 access-list OUT-IN extended permit icmp any any echo-reply
 access-list OUT-IN extended permit icmp any any unreachable
 access-list OUT-IN extended permit tcp any host 10.10.36.82 eq www

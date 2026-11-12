@@ -115,7 +115,7 @@ Tài liệu này trả lời câu hỏi vì sao thiết kế như vậy, dành c
 
 ### Firewall chọn NGFW từ 4 Gbps khi bật IPS
 
-- **Lý do**: tổng lưu lượng qua firewall khoảng 1,9 Gbps. Khi bật IPS và SSL inspection hiệu năng giảm mạnh so với số quảng cáo, nên chọn dư hơn hai lần.
+- **Lý do**: tổng lưu lượng qua firewall khoảng 1,24 Gbps (số trong tài liệu 04). Khi bật IPS và SSL inspection hiệu năng giảm mạnh so với số quảng cáo, nên nhân hệ số an toàn 2 được khoảng 2,5 Gbps và chọn mức 4 Gbps để còn dư.
 
 ### Số lượng access switch và AP
 

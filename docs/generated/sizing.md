@@ -12,7 +12,7 @@ Distribution tòa A: 13 x 10G xuống access = 130 Gbps, lên core tối thiểu
 Distribution tòa B: 13 x 10G xuống access = 130 Gbps, lên core tối thiểu 32.5 Gbps (oversubscription 4:1) nên dùng 2 x 40G.
 
 Luồng camera trụ sở: 368 Mbps liên tục (4 Mbps/camera).
-Luồng máy trạm tới server farm (giả định 1.0 Mbps/máy lúc cao điểm, đã tăng trưởng): 720 Mbps.
-PACS trụ sở (200 ca/ngày x 400 MB): 57 Mbps cao điểm.
+Luồng tới server farm (7 server x 3000 MB/ngày, đã tăng trưởng): 14.9 Mbps.
+PACS trụ sở (300 ca/ngày x 400 MB, đã tăng trưởng): 85.3 Mbps cao điểm.
 Lưu lượng Internet sau 5 năm: 700 Mbps (hai chiều).
-Tổng lưu lượng đi qua firewall (ước tính): 1918 Mbps, nên chọn NGFW có throughput bật IPS tối thiểu 4 Gbps (hệ số an toàn 2).
+Tổng lưu lượng đi qua firewall (ước tính): 1241.6 Mbps, nhân hệ số an toàn 2 được 2.5 Gbps; chọn NGFW có throughput bật IPS từ 4 Gbps.

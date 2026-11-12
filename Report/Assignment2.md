@@ -66,7 +66,7 @@ Mbps cao điểm = MB/ngày × 8 × 0,8 / (3 × 3600). Nhân 1,2 cho năm thứ 
 | BHTQ | 113,8 / 17,8 | 153,5 / 41,5 |
 | Tổng Internet sau 5 năm | 600,2 / 99,6 | Hai đường Internet tại HCM |
 
-Camera HCM tạo 368 Mbps liên tục. Tổng lưu lượng qua firewall ước tính 1,918 Gbps với tải tăng trưởng. Chọn NGFW có thông lượng tối thiểu 4 Gbps với tính năng kiểm tra cần dùng. Một uplink access cần khoảng 2,4 Gbps theo hệ số 20:1. Mỗi distribution cần khoảng 32,5 Gbps lên core theo hệ số 4:1.
+Camera HCM tạo 368 Mbps liên tục. Tổng lưu lượng qua firewall ước tính 1,24 Gbps với tải tăng trưởng, gồm Internet 699,7 Mbps, camera 441,6 Mbps, PACS 85,3 Mbps và lưu lượng tới server farm 14,9 Mbps. Nhân hệ số an toàn 2 được khoảng 2,5 Gbps, chọn NGFW có thông lượng từ 4 Gbps với tính năng kiểm tra cần dùng. Một uplink access cần khoảng 2,4 Gbps theo hệ số 20:1. Mỗi distribution cần khoảng 32,5 Gbps lên core theo hệ số 4:1.
 
 Hai DSL theo đề là phương án so sánh. Ngay cả khi giả định mỗi DSL đạt 100 Mbps chiều xuống, hai đường cộng lại vẫn thấp hơn 600,2 Mbps. Đề xuất hai đường fiber doanh nghiệp 1 Gbps đối xứng, mỗi đường gánh được tải dự kiến khi đường kia mất. Dùng theo dõi đường đi và chia phiên theo đường egress trong thiết kế thật.
 
@@ -78,15 +78,14 @@ Hai DSL theo đề là phương án so sánh. Ngay cả khi giả định mỗi 
 | SD-WAN hoặc IPsec trên broadband | Triển khai nhanh và chi phí thấp | Biến động độ trễ, SLA hạn chế |
 | Metro Ethernet/VPLS | Kết nối L2, băng thông đối xứng tùy gói | Phạm vi cung cấp và miền broadcast |
 
-Chọn kênh L2 500 Mbps mỗi chi nhánh. Bảng sau là kịch bản ngân sách giả định để so sánh, đơn vị triệu đồng/tháng cho cả hệ thống, chưa gồm VAT, lắp đặt, thiết bị và license. Thay giả định bằng báo giá theo địa chỉ trước khi mua.
+Chọn kênh L2 500 Mbps mỗi chi nhánh. Nhóm không tìm được bảng giá công khai tại Việt Nam cho kênh thuê riêng hay MPLS, nên chi phí WAN so sánh theo tỷ lệ từ khảo sát Bắc Mỹ ngày 8/4/2026 của Lightyear: MPLS đắt khoảng 1,5 lần DIA cùng băng thông, SD-WAN trên DIA rẻ hơn MPLS khoảng 25%, SD-WAN trên băng rộng rẻ hơn khoảng 72%. Giá thuê bao Internet doanh nghiệp tham khảo theo bảng giá chogia.vn ngày 01/04/2024:
 
-| Phương án | Giả định đơn giá | Tổng/tháng |
-|---|---|---:|
-| Internet HCM | 2 × 3 cho fiber 1 Gbps | 6 |
-| WAN L2 500 Mbps | 2 × 15 | 30 |
-| WAN MPLS 500 Mbps | 2 × 22 | 44 |
-| WAN SD-WAN trên DIA | 2 × 10 đường nền + 3 × 2 quản lý | 26 |
-| WAN IPsec trên broadband | 2 × 3 đường chi nhánh | 6 |
+| Tốc độ | FPT | Viettel | VNPT |
+|---|---:|---:|---:|
+| 500 Mbps | 1,5 | 1,8 | 2,0 |
+| 1 Gbps | 2,5 | 3,0 | không có gói |
+
+Đơn vị triệu đồng/tháng. Với hai đường 1 Gbps, chi phí thuê bao Internet của HCM từ 5 đến 6 triệu đồng/tháng. Chi phí WAN thật phải lấy từ báo giá của Viettel, VNPT hoặc FPT theo địa chỉ trước khi mua.
 
 ## 4. Mô phỏng
 

@@ -15,12 +15,14 @@ Số liệu do `tools/bandwidth.py` và `tools/sizing.py` tính; kết quả đ�
 | Lưu lượng HIS của chi nhánh về trụ sở | 40 MB/ngày mỗi người dùng | Giả định |
 | PACS chi nhánh gửi về trụ sở | 60 ca/ngày, 300 MB/ca | Giả định, theo khoảng kích thước ca ở tài liệu 01 |
 | Xem camera từ xa | 8 Mbps mỗi chi nhánh | Giả định |
+| PACS trụ sở | 300 ca/ngày, 400 MB/ca | Giả định, theo hai nguồn ở mục 4 của tài liệu 01: 418 ca/ngày của một mạng bệnh viện nhiều cơ sở và khoảng 311 ca/ngày mỗi bệnh viện của một hệ thống năm bệnh viện (suy ra từ 285981 ca trong sáu tháng); kích thước ca theo khoảng ở nguồn GSE |
+| Lưu lượng tới server farm | 7 server x (1000 + 2000) MB/ngày | Suy từ số liệu server của đề: 10 server trừ 3 server ở DMZ |
 
 ## 2. Công thức
 
 Tốc độ cao điểm (Mbps) = MB mỗi ngày x 8 x 0,8 / (3 x 3600).
 
-Ví dụ một máy trạm tải xuống: 500 x 8 x 0,8 / 10800 = 0,296 Mbps. 600 máy trạm tải xuống 177,8 Mbps; 10 server tải xuống 2,96 Mbps; 300 thiết bị khách 88,9 Mbps; cộng lại 269,6 Mbps (bảng dưới tính chính xác theo từng site).
+Ví dụ một máy trạm tải xuống: 500 x 8 x 0,8 / 10800 = 0,296 Mbps. 600 máy trạm tải xuống 177,8 Mbps; 10 server tải xuống 5,93 Mbps; 300 thiết bị khách 88,9 Mbps; cộng lại 272,6 Mbps, khớp với bảng dưới.
 
 ## 3. Kết quả
 
@@ -39,9 +41,9 @@ Tổng Internet hiện tại: 500,1 Mbps xuống, 83,0 Mbps lên. Sau 5 năm: 60
 | Hạng mục | Kết quả |
 |---|---|
 | Camera trụ sở | 92 camera x 4 Mbps = 368 Mbps ghi liên tục tới NVR |
-| Máy trạm tới server farm | 720 Mbps (giả định 1 Mbps mỗi máy, đã nhân tăng trưởng) |
-| PACS trụ sở | 57 Mbps cao điểm (200 ca/ngày, 400 MB/ca) |
-| Tổng qua firewall | khoảng 1,9 Gbps; chọn NGFW bật IPS tối thiểu 4 Gbps |
+| Tới server farm | 14,9 Mbps (7 server x 3000 MB/ngày, đã nhân tăng trưởng) |
+| PACS trụ sở | 85,3 Mbps cao điểm (300 ca/ngày, 400 MB/ca, đã nhân tăng trưởng) |
+| Tổng qua firewall | 1241,6 Mbps (Internet 699,7 + server farm 14,9 + camera 441,6 + PACS 85,3); nhân hệ số an toàn 2 được 2,5 Gbps; chọn NGFW bật IPS từ 4 Gbps |
 | Uplink access | 48 cổng 1 G chia 20 bằng 2,4 Gbps cần; dùng 1 x 10G tới mỗi distribution |
 | Distribution lên core | 13 x 10G xuống access, chia 4 bằng 32,5 Gbps; dùng 2 x 40G |
 | Số switch access | A 13, B 13, mỗi chi nhánh 9 |
@@ -58,7 +60,7 @@ Tổng băng thông Internet cần sau 5 năm: 600 Mbps xuống, 100 Mbps lên, 
 
 Đề xuất: hai đường Internet doanh nghiệp 1 Gbps từ hai nhà mạng khác nhau, đi hai tuyến khác nhau; chia tải giữa hai đường bằng ECMP trên firewall thật; trong Packet Tracer ECMP của ASA làm NAT và đường về lệch nên mô phỏng chia theo đích (hai tuyến /1, mỗi tuyến có tuyến dự phòng ở đường còn lại), xem tài liệu 05. Nếu bắt buộc theo chữ của đề (DSL), báo cáo ghi rõ đây là điểm không đủ và nêu lý do bằng bảng trên.
 
-Chi phí thuê bao: không tìm được giá công khai cho đường thuê riêng và Internet doanh nghiệp 1 Gbps tại Việt Nam. Bảng giá tham khảo đọc được (ngày đăng không rõ) cho gói 500 Mbps khoảng 1,5 đến 2 triệu đồng mỗi tháng và 1 Gbps khoảng 2,5 đến 3 triệu đồng mỗi tháng; đây chỉ là ước lượng và phải được thay bằng báo giá của nhà mạng trước khi nộp.
+Chi phí thuê bao: không tìm được giá công khai cho đường thuê riêng và Internet doanh nghiệp 1 Gbps tại Việt Nam. Bảng giá chogia.vn đăng ngày 01/04/2024 (https://chogia.vn/cap-nhat-bang-gia-lap-mang-internet-cap-quang-hom-nay-ngay-thang-nam-49979/) cho gói doanh nghiệp 500 Mbps: FPT 1,5 triệu, Viettel 1,8 triệu, VNPT 2,0 triệu đồng mỗi tháng; gói 1 Gbps: FPT 2,5 triệu, Viettel 3,0 triệu, VNPT không có gói 1 Gbps. Đây là giá niêm yết năm 2024 và phải được thay bằng báo giá của nhà mạng trước khi nộp.
 
 ## 6. Chọn đường thuê riêng cho chi nhánh
 
@@ -66,14 +68,14 @@ Nhu cầu khoảng 154 Mbps xuống và 42 Mbps lên sau 5 năm, cộng nhu cầ
 
 ## 7. Các phương án WAN, chi phí và phân tích phương án chọn
 
-Đề yêu cầu liệt kê các phương án kết nối chi nhánh, đưa chi phí và phân tích ưu nhược điểm của phương án chọn. Không tìm được bảng giá công khai tại Việt Nam cho kênh thuê riêng hay MPLS (trang BKNS chỉ nêu dải băng thông 2 Mbps đến 10 Gbps, trang Viettel chỉ dẫn số liên hệ), nên cột chi phí dùng tỷ lệ tương đối từ một khảo sát thị trường Bắc Mỹ ngày 8/4/2026 (Lightyear): MPLS 1 Gbps khoảng 1,44 USD mỗi Mbps mỗi tháng, đường Internet chuyên dụng (DIA) 1 Gbps khoảng 0,97 USD, băng rộng 1 Gbps khoảng 0,31 USD, SD-WAN quản lý trọn gói từ khoảng 100 USD mỗi site mỗi tháng. Tỷ lệ này chỉ để so sánh giữa các phương án; con số thật phải thay bằng báo giá của Viettel, VNPT hoặc FPT.
+Đề yêu cầu liệt kê các phương án kết nối chi nhánh, đưa chi phí và phân tích ưu nhược điểm của phương án chọn. Không tìm được bảng giá công khai tại Việt Nam cho kênh thuê riêng hay MPLS (trang BKNS chỉ nêu dải băng thông 2 Mbps đến 10 Gbps, trang Viettel chỉ dẫn số liên hệ), nên cột chi phí dùng tỷ lệ tương đối từ khảo sát thị trường Bắc Mỹ ngày 8/4/2026 của Lightyear (https://lightyear.ai/blogs/sd-wan-vs-mpls-cost-comparison): giá một mạch 1 Gbps mỗi tháng là 1439 USD với MPLS, 966 USD với đường Internet chuyên dụng (DIA), 307 USD với băng rộng; SD-WAN quản lý trọn gói từ khoảng 100 USD mỗi site mỗi tháng. Từ đó MPLS đắt khoảng 1,5 lần DIA, SD-WAN trên DIA rẻ hơn MPLS khoảng 25%, SD-WAN trên băng rộng rẻ hơn khoảng 72%. Tỷ lệ này chỉ để so sánh giữa các phương án; con số thật phải thay bằng báo giá của Viettel, VNPT hoặc FPT.
 
 | Phương án | Chi phí tương đối | Ưu điểm | Nhược điểm |
 |---|---|---|---|
 | Kênh thuê riêng L2 đối xứng (chọn) | Trung bình đến cao, giá cố định theo băng thông | Đối xứng, riêng tư, độ trễ ổn định, có SLA, đơn giản; thêm IPsec để mã hóa | Giá cao hơn băng rộng; một nhà mạng một điểm hỏng nếu không có đường dự phòng |
 | MPLS L3VPN | Cao nhất (khoảng 1,5 lần DIA cùng băng thông) | QoS và SLA tích hợp, định tuyến do nhà mạng quản lý | Phụ thuộc nhà mạng, khó đổi nhà mạng, khó mở rộng lên đám mây |
 | SD-WAN trên đường DIA | Thấp hơn MPLS khoảng 25% | Chọn đường theo ứng dụng, quản lý tập trung | Chất lượng phụ thuộc đường nền, cần thiết bị và giấy phép từng site |
-| SD-WAN trên băng rộng | Thấp nhất, tiết kiệm đến khoảng 70% so với MPLS | Rẻ, triển khai nhanh | Không có SLA, độ trễ và mất gói biến động, không hợp cho HIS và PACS làm đường chính |
+| SD-WAN trên băng rộng | Thấp nhất, thấp hơn MPLS khoảng 72% | Rẻ, triển khai nhanh | Không có SLA, độ trễ và mất gói biến động, không hợp cho HIS và PACS làm đường chính |
 | IPsec thẳng trên Internet | Thấp (chỉ phí đường Internet sẵn có) | Rẻ, không cần thuê thêm | Không SLA, chia sẻ đường với lưu lượng Internet |
 | VPLS hoặc Metro Ethernet | Cao, tương tự kênh thuê riêng | Hai chi nhánh cùng một mạng L2 | Miền broadcast rộng, thường không có tại mọi địa chỉ |
 

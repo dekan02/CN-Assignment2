@@ -7,8 +7,11 @@ SWITCH_PORTS = 48
 ACCESS_OVERSUB = 20
 DIST_OVERSUB = 4
 CCTV_MBPS = 4
-SERVER_FARM_MBPS_PER_WS = 1.0
-PACS_STUDIES_MAIN = 200
+DMZ_SERVERS = 3
+MAIN_SERVERS = 10
+SAFETY_FACTOR = 2
+NGFW_CHOSEN_GBPS = 4
+PACS_STUDIES_MAIN = 300
 PACS_STUDY_MB = 400
 
 
@@ -52,7 +55,7 @@ def report():
     main_ws = sum(r["workstations"] for r in rows[:2])
     cctv_main = sum(r["cctv"] for r in rows[:2])
     cctv_stream = cctv_main * CCTV_MBPS
-    server_farm = main_ws * SERVER_FARM_MBPS_PER_WS * GROWTH
+    server_farm = bw.peak_mbps((MAIN_SERVERS - DMZ_SERVERS) * (bw.SRV_DOWN + bw.SRV_UP)) * GROWTH
     pacs = bw.peak_mbps(PACS_STUDIES_MAIN * PACS_STUDY_MB) * GROWTH
     summary = bw.summary()
     internet = summary["internet_down_5y"] + summary["internet_up_5y"]
@@ -79,10 +82,10 @@ def render():
         lines.append(f"Distribution tòa {x['group']}: {x['switches']} x 10G xuống access = {x['dist_down_gbps']} Gbps, lên core tối thiểu {x['dist_to_core_gbps']:.1f} Gbps (oversubscription {DIST_OVERSUB}:1) nên dùng 2 x 40G.")
     lines.append("")
     lines.append(f"Luồng camera trụ sở: {r['cctv_stream_mbps']:.0f} Mbps liên tục ({CCTV_MBPS} Mbps/camera).")
-    lines.append(f"Luồng máy trạm tới server farm (giả định {SERVER_FARM_MBPS_PER_WS} Mbps/máy lúc cao điểm, đã tăng trưởng): {r['server_farm_mbps']:.0f} Mbps.")
-    lines.append(f"PACS trụ sở ({PACS_STUDIES_MAIN} ca/ngày x {PACS_STUDY_MB} MB): {r['pacs_mbps']:.0f} Mbps cao điểm.")
+    lines.append(f"Luồng tới server farm ({MAIN_SERVERS - DMZ_SERVERS} server x {bw.SRV_DOWN + bw.SRV_UP} MB/ngày, đã tăng trưởng): {r['server_farm_mbps']:.1f} Mbps.")
+    lines.append(f"PACS trụ sở ({PACS_STUDIES_MAIN} ca/ngày x {PACS_STUDY_MB} MB, đã tăng trưởng): {r['pacs_mbps']:.1f} Mbps cao điểm.")
     lines.append(f"Lưu lượng Internet sau 5 năm: {r['internet_mbps']:.0f} Mbps (hai chiều).")
-    lines.append(f"Tổng lưu lượng đi qua firewall (ước tính): {r['fw_total_mbps']:.0f} Mbps, nên chọn NGFW có throughput bật IPS tối thiểu {math.ceil(r['fw_total_mbps'] * 2 / 1000)} Gbps (hệ số an toàn 2).")
+    lines.append(f"Tổng lưu lượng đi qua firewall (ước tính): {r['fw_total_mbps']:.1f} Mbps, nhân hệ số an toàn {SAFETY_FACTOR} được {r['fw_total_mbps'] * SAFETY_FACTOR / 1000:.1f} Gbps; chọn NGFW có throughput bật IPS từ {NGFW_CHOSEN_GBPS} Gbps.")
     return "\n".join(lines)
 
 

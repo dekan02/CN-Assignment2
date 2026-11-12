@@ -26,7 +26,8 @@ Tổng hợp từ các nguồn đã đọc để làm cơ sở thiết kế. Ph�
 
 - Kích thước ca chụp tham khảo từ ví dụ trong nguồn: CT 350 MB đến 1,2 GB, MRI 250 đến 400 MB, X-quang 20 đến 30 MB. Nên đo số liệu thật của bệnh viện và lấy trung vị.
 - 1 Gbps đủ cho khoa nhỏ có CT/MRI vừa phải; 10 Gbps khi nhiều trạm đọc, truy xuất lưu trữ và xử lý 3D. Thiết kế theo giờ cao điểm, không theo trung bình; tách VLAN riêng và ưu tiên QoS cho DICOM; WAN thường là nút thắt nên cần bộ nhớ đệm cục bộ và lịch chuyển dữ liệu lớn vào ban đêm.
-- Nguồn: GSE, PACS server capacity (https://gse.kz/en/blog/pacs-server-capacity-iops-network-dicom).
+- Số ca mỗi ngày: một mạng bệnh viện nhiều cơ sở đọc 12536 ca trong tháng 2/2026, tức 418 ca mỗi ngày (bài của nhà cung cấp, không nêu số giường); năm bệnh viện của một hệ thống đọc 285981 ca trong sáu tháng của năm 2011, tức khoảng 311 ca mỗi bệnh viện mỗi ngày (phép chia của nhóm, bài không nêu số giường).
+- Nguồn: GSE, PACS server capacity (https://gse.kz/en/blog/pacs-server-capacity-iops-network-dicom); 5C Network, 18/3/2026 (https://www.5cnetwork.com/blog/strapi/scaling-radiology-infrastructure-12000-scans); AuntMinnie, 10/2/2014 (https://www.auntminnie.com/imaging-informatics/enterprise-imaging/pacs-vna/article/15608682/workload-analysis-helps-enable-subspecialized-reading).
 
 ## 5. Lựa chọn kết nối WAN
 
@@ -34,7 +35,7 @@ Tổng hợp từ các nguồn đã đọc để làm cơ sở thiết kế. Ph�
 - SD-WAN: chi phí thấp hơn do chạy trên băng thông rộng thông thường, triển khai không cần can thiệp (zero-touch), chọn đường theo chỉ số thời gian thực; hạn chế là lo ngại bảo mật trên Internet, chất lượng ứng dụng trên băng thông rộng và độ phức tạp vận hành.
 - Kênh thuê riêng (leased line): điểm nối điểm, băng thông không chia sẻ, đối xứng, riêng tư; nhà mạng cam kết hỗ trợ 24/7, phản hồi lỗi trong 30 phút và xử lý trong 120 phút theo nguồn tiếng Việt. Khác FTTH: băng thông FTTH chia sẻ và không đảm bảo.
 - Nguồn: TelecomTrainer (https://www.telecomtrainer.com/mpls-vs-sd-wan-a-clear-comparison-for-modern-enterprise-networks/), BKNS (https://www.bkns.vn/?p=48949).
-- Giá: các bảng giá cước đọc được (chogia.vn) có ngày đăng không rõ ràng, nên chỉ dùng làm ước lượng. Gói doanh nghiệp tham khảo: 500 Mbps khoảng 1,5 đến 2 triệu đồng mỗi tháng, 1 Gbps khoảng 2,5 đến 3 triệu đồng mỗi tháng. Không tìm được giá công khai của kênh thuê riêng hay MPLS tại Việt Nam, nên chi phí WAN trong thiết kế là giả định cần báo giá nhà mạng.
+- Giá: bảng giá chogia.vn đăng ngày 01/04/2024 (https://chogia.vn/cap-nhat-bang-gia-lap-mang-internet-cap-quang-hom-nay-ngay-thang-nam-49979/). Gói doanh nghiệp: 500 Mbps từ 1,5 đến 2,0 triệu đồng mỗi tháng, 1 Gbps từ 2,5 đến 3,0 triệu đồng mỗi tháng (VNPT không có gói 1 Gbps). Đây là giá niêm yết năm 2024. Không tìm được giá công khai của kênh thuê riêng hay MPLS tại Việt Nam, nên chi phí WAN trong thiết kế là giả định cần báo giá nhà mạng.
 
 ## 6. Hai đường Internet và chia tải
 

@@ -71,9 +71,9 @@ Tài liệu này trả lời câu hỏi vì sao thiết kế như vậy, dành c
 
 - **Lý do**: /30 vừa đủ hai địa chỉ, không phí. Tách khỏi 10.x để địa chỉ hạ tầng không lẫn với địa chỉ người dùng, giúp ACL dễ viết. Loopback làm router-id OSPF để id không đổi khi một cổng hỏng.
 
-### Địa chỉ công cộng mô phỏng lấy từ dải tài liệu (203.0.113.0/29, 198.51.100.0/29, 192.0.2.0/24)
+### Địa chỉ công cộng mô phỏng lấy từ dải dành riêng (198.18.1.0/29, 198.51.100.0/29, 192.0.2.0/24)
 
-- **Lý do**: các dải này được dành riêng để làm ví dụ và không bao giờ được định tuyến trên Internet thật, nên mô phỏng không đụng địa chỉ thật.
+- **Lý do**: 198.51.100.0/24 và 192.0.2.0/24 là dải dành riêng cho tài liệu (RFC 5737), còn 198.18.0.0/15 là dải dành riêng cho đo kiểm (RFC 2544). Không dải nào được định tuyến trên Internet thật, nên mô phỏng không đụng địa chỉ thật.
 
 ### Quy ước `.1` là gateway ảo, `.2` và `.3` là hai distribution
 

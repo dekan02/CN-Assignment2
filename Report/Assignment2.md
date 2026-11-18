@@ -102,7 +102,7 @@ Bảng dưới ghi kết quả nhóm đã mô tả trong tài liệu mô phỏng
 | Cùng VLAN | Hai PC-A-OUTPATIENT ping nhau | Thông |
 | Khác VLAN | PC-B-TRAINING → PC-A-PHARMACY | 4/4 |
 | HCM ↔ chi nhánh | PC-A-PHARMACY ping 10.20.0.11 và 10.30.0.11 | 4/4 mỗi đích, traceroute DBP đi qua router WAN |
-| DMZ | LAN mở http://10.10.36.82, TELE-PC mở http://203.0.113.3 | Cả hai mở được |
+| DMZ | LAN mở http://10.10.36.82, TELE-PC mở http://198.18.1.3 | Cả hai mở được |
 | Guest bị chặn vào LAN | GUEST-PHONE ping 10.10.20.11 và 10.10.36.66 | Mất 100% gói, guest vẫn mở web Internet |
 | Web Internet | PC-A-PHARMACY mở http://192.0.2.10 | Mở được |
 
@@ -110,11 +110,11 @@ Bảng dưới ghi kết quả nhóm đã mô tả trong tài liệu mô phỏng
 
 Sau khi mạng hội tụ, log `Simulation/pt/retest.log` ghi ping cùng VLAN 3/3, HCM → DBP 3/3, HCM → BHTQ 3/3, khác VLAN 2/3 và camera → HIS 0/3 theo chính sách chặn. Ca khác VLAN sử dụng địa chỉ DHCP thực tế của PC-A-PHARMACY là 10.10.3.165. Log chẩn đoán cho thấy hai core và hai router WAN đều có láng giềng OSPF ở trạng thái FULL. Ping tới máy chủ Internet từ PC-A-OUTPATIENT-2 đạt 1/3 và DBP → BHTQ đạt 0/3 trong lần chạy này.
 
-Ca HTTP từ TELE-PC tới 203.0.113.3 đã đạt trên bản mô phỏng đã lưu. ISP1 định tuyến IP public của portal tới EDGE1. Firewall dùng tuyến /32 về TELE-PC qua EDGE1 để gói trả lời đi đúng router NAT. Ảnh xác nhận nằm tại `Simulation/pt/dmz-http.png`.
+Ca HTTP từ TELE-PC tới địa chỉ NAT tĩnh của portal đã đạt trên bản mô phỏng đã lưu (lúc chạy, địa chỉ này là 203.0.113.3; nay đã đổi sang 198.18.1.3). ISP1 định tuyến IP public của portal tới EDGE1. Firewall dùng tuyến /32 về TELE-PC qua EDGE1 để gói trả lời đi đúng router NAT. Ảnh xác nhận nằm tại `Simulation/pt/dmz-http.png`.
 
 HTTP Internet từ LAN và cách ly WiFi khách chưa được chạy lại trên bản lưu mới. Kết quả của nhóm cho hai ca này nằm trong bảng phía trên.
 
-Để minh họa tài liệu Reference, truy cập địa chỉ public của portal từ TELE-PC và kiểm tra `show ip nat translations` tại EDGE1. Log trong repo có bản dịch từ 203.0.113.3:80 tới 10.10.36.82:80 với nguồn ngoài 198.51.101.10. Kiểm tra PAT trên cả hai edge bằng hai đích thuộc hai dải /1. Dùng `show ip ospf neighbor`, `show standby brief` và `show crypto ipsec sa` để kiểm tra định tuyến, dự phòng gateway và bộ đếm mã hóa.
+Để minh họa tài liệu Reference, truy cập địa chỉ public của portal từ TELE-PC và kiểm tra `show ip nat translations` tại EDGE1. Log trong repo (ghi trước khi đổi địa chỉ ISP1 sang 198.18.1.0/29) có bản dịch từ 203.0.113.3:80 tới 10.10.36.82:80 với nguồn ngoài 198.51.101.10. Kiểm tra PAT trên cả hai edge bằng hai đích thuộc hai dải /1. Dùng `show ip ospf neighbor`, `show standby brief` và `show crypto ipsec sa` để kiểm tra định tuyến, dự phòng gateway và bộ đếm mã hóa.
 
 ## 6. Đánh giá và hướng phát triển
 

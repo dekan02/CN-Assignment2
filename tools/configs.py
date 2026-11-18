@@ -620,7 +620,7 @@ def fw_config():
         f"access-list OUT-IN extended deny ip {T.VPN_NET} 255.255.255.0 any",
         "access-list OUT-IN extended permit tcp any 10.0.0.0 255.0.0.0",
         "access-list OUT-IN extended permit icmp 172.16.0.0 255.255.0.0 any",
-        "access-list OUT-IN extended permit icmp 203.0.113.0 255.255.255.248 any",
+        "access-list OUT-IN extended permit icmp 198.18.1.0 255.255.255.248 any",
         "access-list OUT-IN extended permit icmp 198.51.100.0 255.255.255.248 any",
         "access-list OUT-IN extended permit icmp 100.64.0.0 255.192.0.0 any",
         "access-list OUT-IN extended deny ip any any",

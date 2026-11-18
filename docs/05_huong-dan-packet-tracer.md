@@ -69,7 +69,7 @@ Mỗi file đã có `exit` đúng chỗ; dán từng khối nhỏ nếu Packet T
 
 Bật dịch vụ HTTP trên PORTAL và WEB-INET (Services > HTTP). Các PC khác để DHCP. WLC: địa chỉ quản trị 10.10.36.4/26, gateway 10.10.36.1; tạo hai WLAN (staff gắn VLAN 320, guest gắn VLAN 330) nếu Packet Tracer của bạn hỗ trợ; nếu không, dùng AccessPoint-PT độc lập và gắn cổng switch.
 
-VPN người dùng từ xa (nếu có): trên TELE-PC mở Desktop > VPN, nhập group `HOSPITAL-VPN`, key `HospitalVPN2026`, máy chủ `203.0.113.2`, người dùng `teleuser`. Các mật khẩu trong thư mục `Configurations/` là giá trị dùng riêng cho bài lab.
+VPN người dùng từ xa (nếu có): trên TELE-PC mở Desktop > VPN, nhập group `HOSPITAL-VPN`, key `HospitalVPN2026`, máy chủ `198.18.1.2`, người dùng `teleuser`. Các mật khẩu trong thư mục `Configurations/` là giá trị dùng riêng cho bài lab.
 
 ## 6. Kiểm tra sau khi nạp
 
@@ -96,7 +96,7 @@ Trước khi chạy, dùng `ipconfig` để lấy địa chỉ IPv4 hiện tại
 | 3a | Trụ sở và chi nhánh | PC-A-OUTPATIENT-1 ping PC-DBP-CLINIC-1 và PC-BHTQ-CLINIC-1 | Thành công; traceroute qua R-WAN |
 | 3b | Hai chi nhánh | PC-DBP-CLINIC-1 ping PC-BHTQ-CLINIC-1 | Thành công qua trụ sở |
 | 4a | Server trong DMZ từ LAN | PC-A-OUTPATIENT-1 mở http://10.10.36.82 | Mở được |
-| 4b | Server trong DMZ từ Internet | WEB-INET (hoặc TELE-PC) mở http://203.0.113.3 | Mở được |
+| 4b | Server trong DMZ từ Internet | WEB-INET (hoặc TELE-PC) mở http://198.18.1.3 | Mở được |
 | 4c | DMZ không vào được LAN | Từ PORTAL ping 10.10.2.x | Không thành công |
 | 5 | Thiết bị khách không vào LAN | Thiết bị khách (smartphone, VLAN 330) ping PC-A-RECEPTION, PC-DBP-CLINIC-1, HIS-APP | Không thành công |
 | 5b | Khách ra Internet | Thiết bị khách mở http://192.0.2.10 | Mở được |
@@ -138,14 +138,14 @@ Mô phỏng đã dựng bằng script (78 thiết bị, 85 trong 86 liên kết,
 | 3c IPsec site-to-site | Ping từ HIS-APP tới SRV-DBP kích hoạt IKE; `show crypto isakmp sa` trên R-WAN1 có cặp 172.16.1.10 và 172.16.1.9 ở trạng thái QM_IDLE, ACTIVE (vài gói đầu mất trong lúc thương lượng) |
 | 5 Thiết bị khách không vào LAN | GUEST-PHONE (smartphone) nối SSID HOSPITAL-GUEST, nhận địa chỉ trong 10.10.34.0/23 (lần kiểm gần nhất là 10.10.34.12) với gateway 10.10.34.1; ping HIS-APP 10.10.36.66 và PC 10.10.20.11 đều nhận `Destination host unreachable` từ 10.10.34.2 trên CORE1, mất 100% gói |
 | 5b Khách ra Internet | GUEST-PHONE mở http://192.0.2.10 thấy trang chủ của WEB-INET; ping 192.0.2.10 TTL 123 |
-| 4a, 4b HTTP | PC-A-PHARMACY mở được http://10.10.36.82 (PORTAL); TELE-PC mở được PORTAL qua địa chỉ NAT tĩnh 203.0.113.3 |
+| 4a, 4b HTTP | PC-A-PHARMACY mở được http://10.10.36.82 (PORTAL); TELE-PC mở được PORTAL qua địa chỉ NAT tĩnh 198.18.1.3 |
 | 4c DMZ không vào LAN | PORTAL ping PC LAN: không thông |
-| 6a, 6b Web và traceroute ra Internet | PC-A-PHARMACY mở được http://192.0.2.10. Từ PC-B-TRAINING, `tracert 8.8.8.8` qua 10.10.20.2, 172.16.3.2, 172.16.0.9, 172.16.0.2 (EDGE1), 203.0.113.1 (ISP1) rồi tới 8.8.8.8 sau 6 hop; `tracert 192.0.2.10` qua 10.10.20.2, 172.16.3.10, 172.16.0.9, 172.16.0.6 (EDGE2), 198.51.100.1 (ISP2), 100.64.2.2 rồi tới WEB-INET sau 7 hop. PC-B-TRAINING ping 8.8.8.8 đạt 4/4, TTL 250 |
-| 6c Chia tải hai đường Internet | ASA chia không gian địa chỉ Internet làm hai nửa: 0.0.0.0/1 ưu tiên outside1 (EDGE1), 128.0.0.0/1 ưu tiên outside2 (EDGE2), mỗi nửa là đường dự phòng của nửa kia. Ping từ HIS-APP tới 8.8.8.8 (nửa đầu, loopback trên INET) có bản dịch PAT 203.0.113.2 trên EDGE1; ping tới 192.0.2.10 (nửa sau) có bản dịch PAT 198.51.100.2 trên EDGE2. Khi tắt Gi0/1 của EDGE1, ping 8.8.8.8 vẫn thông 5/6 qua EDGE2 |
+| 6a, 6b Web và traceroute ra Internet | PC-A-PHARMACY mở được http://192.0.2.10. Từ PC-B-TRAINING, `tracert 8.8.8.8` qua 10.10.20.2, 172.16.3.2, 172.16.0.9, 172.16.0.2 (EDGE1), 198.18.1.1 (ISP1) rồi tới 8.8.8.8 sau 6 hop; `tracert 192.0.2.10` qua 10.10.20.2, 172.16.3.10, 172.16.0.9, 172.16.0.6 (EDGE2), 198.51.100.1 (ISP2), 100.64.2.2 rồi tới WEB-INET sau 7 hop. PC-B-TRAINING ping 8.8.8.8 đạt 4/4, TTL 250 |
+| 6c Chia tải hai đường Internet | ASA chia không gian địa chỉ Internet làm hai nửa: 0.0.0.0/1 ưu tiên outside1 (EDGE1), 128.0.0.0/1 ưu tiên outside2 (EDGE2), mỗi nửa là đường dự phòng của nửa kia. Ping từ HIS-APP tới 8.8.8.8 (nửa đầu, loopback trên INET) có bản dịch PAT 198.18.1.2 trên EDGE1; ping tới 192.0.2.10 (nửa sau) có bản dịch PAT 198.51.100.2 trên EDGE2. Khi tắt Gi0/1 của EDGE1, ping 8.8.8.8 vẫn thông 5/6 qua EDGE2 |
 | 6d NAT tĩnh | `show ip nat translations` trên EDGE1 có 3 bản dịch tĩnh (PORTAL 80 và 443, MAIL-GW 25) |
 | 7 HSRP | Tắt bốn cổng của DS-A1: ping WEB-INET 4/4, ping PC-DBP 2/4 trong lúc OSPF hội tụ; DS-A2 nhận vai trò Active; bật lại cổng thì DS-A1 giành lại Active nhờ preempt |
 | 8 Chuyển đổi Internet | `shutdown` Gi0/1 EDGE1: ping WEB-INET mất 1 gói rồi thông 3/4 qua EDGE2 (TTL 122) |
-| 9 Easy VPN | TELE-PC nhập nhóm HOSPITAL-VPN, máy chủ 203.0.113.2, báo VPN is connected và nhận 192.168.99.10; ping HIS-APP 10.10.36.66 đạt 3/4 (TTL 126, mất gói đầu do ARP); ping PC 10.10.20.11 không thông |
+| 9 Easy VPN | TELE-PC nhập nhóm HOSPITAL-VPN, máy chủ 198.18.1.2, báo VPN is connected và nhận 192.168.99.10; ping HIS-APP 10.10.36.66 đạt 3/4 (TTL 126, mất gói đầu do ARP); ping PC 10.10.20.11 không thông |
 
 ### Điểm Packet Tracer khác với thiết bị thật
 
@@ -157,11 +157,11 @@ Mô phỏng đã dựng bằng script (78 thiết bị, 85 trong 86 liên kết,
 - Tuyến mặc định của ASA: hai tuyến cùng đích làm ECMP khiến NAT và đường về lệch nhau, nên chia theo đích bằng 0.0.0.0/1 và 128.0.0.0/1 (mỗi nửa một ISP chính, metric 1, và một tuyến dự phòng, metric 2, qua ISP còn lại), kèm tuyến máy chủ tới 172.16.0.2, 172.16.0.6 và 172.16.0.10. Packet Tracer còn sinh thêm hai tuyến connected sai (172.16.0.0/30 trên outside2 và inside) nên cần các tuyến máy chủ này để định tuyến đúng.
 - ACL trên ASA không theo dõi TCP: gói trả về từ DMZ phải được cho phép rõ ràng, dòng `permit tcp 10.10.36.80 255.255.255.240 any` đặt trước dòng `deny` tới 10.0.0.0/8.
 - Để lưu lượng TCP trả về từ Internet vào được mạng nội bộ (HTTP từ khách và PC ra Internet), OUT-IN thêm dòng `permit tcp any 10.0.0.0 255.0.0.0`, đặt sau dòng `deny` nguồn từ dải VPN (192.168.99.0/24) và trước `deny ip any any`. ASA thật theo dõi trạng thái nên không cần dòng này.
-- ACL của ASA trong Packet Tracer chỉ nhận ba loại ICMP là echo, echo-reply và unreachable, không lọc được time-exceeded. Để traceroute từ LAN ra Internet hiện đủ hop, OUT-IN cho phép ICMP có nguồn từ các dải liên kết của nhà mạng là 172.16.0.0/16, 203.0.113.0/29, 198.51.100.0/29 và 100.64.0.0/10. Ping từ Internet vào LAN vẫn bị chặn.
+- ACL của ASA trong Packet Tracer chỉ nhận ba loại ICMP là echo, echo-reply và unreachable, không lọc được time-exceeded. Để traceroute từ LAN ra Internet hiện đủ hop, OUT-IN cho phép ICMP có nguồn từ các dải liên kết của nhà mạng là 172.16.0.0/16, 198.18.1.0/29, 198.51.100.0/29 và 100.64.0.0/10. Ping từ Internet vào LAN vẫn bị chặn.
 - ARP trên ASA trong Packet Tracer không gắn với từng cổng. Khi cổng outside1 chớp tắt, tuyến nửa dưới tạm chuyển sang outside2 và ASA ghi địa chỉ MAC học được qua outside2 cho đích như 8.8.8.8. Khi outside1 hoạt động lại, ASA gửi gói ra EDGE1 nhưng vẫn dùng MAC cũ nên EDGE1 loại gói, ping ra Internet mất 100% trong khi mọi thứ khác vẫn thông. Packet Tracer không có `clear arp` hay `arp timeout`; cách xử lý là chạy `shutdown` rồi `no shutdown` trên cổng giữ các mục ARP sai, ở đây là Gi1/2, lúc không có lưu lượng. Lỗi này nhìn thấy rõ nhất trong chế độ Simulation, nơi EDGE1 báo địa chỉ MAC đích không khớp với cổng nhận. ASA thật lưu ARP riêng cho từng cổng nên không bị.
 - Sau reload, các cổng ASA ở trạng thái `shutdown`, phải `no shutdown` và `write memory` lại.
 - Sau `ipconfig /renew`, TELE-PC mất địa chỉ tĩnh vì còn cờ DHCP; script đặt `setDhcpClientFlag(false)` trước khi gán địa chỉ.
-- Sau khi mở lại file `.pkt`, mạng cần khoảng một phút hội tụ; thao tác VPN ngay lúc đó sẽ báo `Connection timed out`, thử lại sau khi ping tới 203.0.113.2 thông là kết nối được.
+- Sau khi mở lại file `.pkt`, mạng cần khoảng một phút hội tụ; thao tác VPN ngay lúc đó sẽ báo `Connection timed out`, thử lại sau khi ping tới 198.18.1.2 thông là kết nối được.
 - Reload nhiều router cùng lúc làm Packet Tracer đóng đột ngột; cấp license từng hai router một và lưu file trước mỗi lần.
 
 ### Phần chưa mô phỏng được
